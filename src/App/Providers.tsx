@@ -1,6 +1,6 @@
 import { ChakraProvider } from '@chakra-ui/react'
 import { AuthProvider } from 'contexts/auth'
-import { BrowserRouter } from 'react-router-dom'
+import { HashRouter } from 'react-router-dom'
 import theme from './theme'
 
 interface Props {
@@ -11,9 +11,9 @@ const Providers = ({ children }: Props) => {
   return (
       <ChakraProvider theme={theme}>
         <AuthProvider>
-          <BrowserRouter>
+          <HashRouter>
             {children}
-          </BrowserRouter>
+          </HashRouter>
         </AuthProvider>
       </ChakraProvider>
   )

@@ -34,23 +34,23 @@ const App = () => (
         }}
       >
         <Routes>
-          <Route path="home" element={<Home />} />
+          <Route path="/home" element={<Home />} />
 
-          <Route path="meetups" element={<SearchMeetups />} />
-          <Route path="meetups/search" element={<SearchMeetups />} />
-          <Route path="meetups/browse" element={<BrowseMeetups />} />
+          <Route path="/meetups" element={<SearchMeetups />} />
+          <Route path="/meetups/search" element={<SearchMeetups />} />
+          <Route path="/meetups/browse" element={<BrowseMeetups />} />
 
-          <Route path="housing" element={<SearchHousing />} />
-          <Route path="housing/search" element={<SearchHousing />} />
-          <Route path="housing/browse" element={<BrowseHousing />} />
+          <Route path="/housing" element={<SearchHousing />} />
+          <Route path="/housing/search" element={<SearchHousing />} />
+          <Route path="/housing/browse" element={<BrowseHousing />} />
 
-          <Route path="profile" element={<Profile />} />
-          <Route path="settings" element={<Settings />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/settings" element={<Settings />} />
 
-          <Route path="login" element={<Login />} />
-          <Route path="verify" element={<Verify />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/verify" element={<Verify />} />
 
-          <Route path="*" element={<Navigate replace to="/home" />} />
+          <Route path="/*" element={<Home />} />
         </Routes>
         <Link position="absolute" bottom={8} right={8} isExternal href="https://nicogalin.com">
           <Image src={NicoLogo} width="140px" />

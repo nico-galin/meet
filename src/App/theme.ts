@@ -58,7 +58,7 @@ const theme = extendTheme({
   colors,
   styles,
   components: components,
-  initialColorMode: 'light',
+  initialColorMode: 'dark',
   useSystemColorMode: false,
 });
 

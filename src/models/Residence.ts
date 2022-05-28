@@ -11,6 +11,11 @@ export interface ResidenceRating {
   flags: string[] //list of user uuid's
 }
 
+export interface Resident {
+  expiration: string
+  user: PublicUser
+}
+
 export interface Residence {
   id: string
   name: string
@@ -21,9 +26,10 @@ export interface Residence {
   photo_uri: string,
   rating?: number
   rating_list: ResidenceRating[]
-  current_residents: PublicUser[]
-  past_residents: PublicUser[]
+  current_residents: Resident[]
+  past_residents: Resident[]
   group_chats: GroupChat[]
+  pending_review?: boolean
 }
 
 export default Residence;
