@@ -1,6 +1,7 @@
 export interface GroupChat {
   company?: string
-  platform: string,
+  restricted: boolean
+  platform: string
   uri: string
   contact: string
   expiration: string

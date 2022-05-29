@@ -110,7 +110,7 @@ const SearchBarInner = ({ filters, placeholder = "Search...", onFocus, onChange,
                 ))}
               </VStack>
               <HStack spacing="5px" width="100%">
-                <Button flex="1" backgroundColor="brand.primary" _hover={{ backgroundColor: "brand.primaryLight"}} fontSize="sm">Go</Button>
+                <Button onClick={() => handleSubmit(searchText)} flex="1" backgroundColor="brand.primary" _hover={{ backgroundColor: "brand.primaryLight"}} fontSize="sm">Go</Button>
                 <Button onClick={() => {setTogglesOpen(false);setSelectedFilters(defaultFilters)}} flex="1" fontSize="sm">Cancel</Button>
               </HStack>
             </VStack>

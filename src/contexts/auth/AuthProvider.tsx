@@ -20,7 +20,7 @@ const firebaseConfig = {
 
 const AuthProvider = (props: any) => {
   const [auth, _] = useState(getAuth(initializeApp(firebaseConfig)));
-  const [user, setUser] = useState<User>();
+  const [user, setUser] = useState<User>({ company_name: "apple"} as User);
   const [publicUser, setPublicUser] = useState<PublicUser>();
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [loading, setLoading] = useState(false);

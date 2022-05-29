@@ -3,13 +3,13 @@ import { supported_companies } from "constants/supported_companies";
 
 
 interface Props {
-  company: string
+  company: string | undefined
   product: string
   ref?: any
   size?: "sm" | "lg"
 }
 
-const ProductHeader = ({ company, product, size, ref }: Props) => {
+const ProductHeader = ({ company = "Test", product, size, ref }: Props) => {
   if (!supported_companies.map(c => c.name).includes(company)) throw Error(`${company} is not supported`);
   return (
     <HStack ref={ref} width="min-content" alignItems="center" spacing="10px" paddingRight="30px">

@@ -10,6 +10,7 @@ import { useMemo } from 'react';
 import executeSearch from 'hooks/executeSearch';
 import { selectedFilter } from 'components/SearchBar/SearchBar';
 import { Meetup } from 'models/Meetup';
+import useAuth from 'contexts/auth/useAuth';
 
 interface Props {}
 
@@ -19,6 +20,7 @@ const BrowseMeetups = ({ }: Props) => {
   const [searchText, setSearchText] = useState("");
   const [selectedFilters, setSelectedFilters] = useState<selectedFilter[]>([]);
   const ref = useRef() as React.MutableRefObject<HTMLInputElement>;
+  const { user } = useAuth();
 
   const meetups = [
     {} as Meetup
@@ -50,7 +52,7 @@ const BrowseMeetups = ({ }: Props) => {
         width="min-content" minW="250px" height="100%"
         borderRight="1px solid" borderColor="brand.secondaryStroke"
       >
-        <ProductHeader company='apple' product='Meetups' size='sm'/>
+        <ProductHeader company={user?.company_name} product='Meetups' size='sm'/>
         <VStack width="100%">
           <HStack marginTop="5px" width="100%">
             <HStack onClick={() => ref.current.focus()} width="100%" backgroundColor="brand.tertiaryBG" padding="0" borderRadius="8px" minH="30px">

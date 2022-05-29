@@ -11,16 +11,17 @@ import DataCard from 'components/DataCard';
 
 interface Props {
   residence: Residence
+  onClick: () => void
 }
 
-const ResidenceCard = ({ residence }: Props) => {
+const ResidenceCard = ({ residence, onClick }: Props) => {
  return (
-    <Button flexDirection="row" width="100%" height="min-content" justifyContent="start" onClick={() => {}} bgColor="brand.secondaryBG" border="1px solid" borderColor="brand.secondaryStroke" borderRadius="8px" padding="15px">
+    <Button onClick={onClick} flexDirection="row" width="100%" height="min-content" justifyContent="start" bgColor="brand.secondaryBG" border="1px solid" borderColor="brand.secondaryStroke" borderRadius="8px" padding="15px">
       <Image src={residence.photo_uri} fit="cover" minHeight="100px" width="100px" borderRadius="8px"/>
       <StackDivider width="15px" />
       <VStack alignItems="start" >
-        <Box alignItems="start">
-          <Text fontWeight="semibold" height="min-content">{residence.name}</Text>
+        <Box alignItems="start" justifyContent="start">
+          <Text fontWeight="semibold" textAlign="left" height="min-content">{residence.name}</Text>
           <Text fontSize="xs" textAlign="start" color="brand.secondary">{residence.address}, {residence.city}, {residence.state} {residence.zip}</Text>
         </Box>
         <HStack>

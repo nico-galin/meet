@@ -1,4 +1,5 @@
-export const meetup_options = {
+let meetup_options: {[type: string]: Object};
+meetup_options = {
   "apple": [
     {
       label: "Location",
@@ -32,7 +33,8 @@ export const meetup_options = {
   ]
 };
 
-export const housing_options = {
+let housing_options: {[type: string]: Object};
+housing_options = {
   "apple": [
     {
       label: "Location",
@@ -57,3 +59,5 @@ export const housing_options = {
     },
   ]
 };
+
+export { housing_options, meetup_options }

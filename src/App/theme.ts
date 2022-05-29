@@ -10,7 +10,7 @@ const colors = {
     secondaryBG: '#2C2C2E',
     secondaryStroke: "#494949",
 
-    tertiaryBG: '#494949',
+    tertiaryBG: '#48484A',
     tertiaryStroke: '#6A6A6A',
 
     primary: '#0A84FF',
@@ -18,6 +18,7 @@ const colors = {
     primaryStroke: '#0069D3',
 
     secondary: '#A7A7A7',
+    secondaryDark: '#494949',
     
     red: "#FF453A"
   },
