@@ -1,4 +1,4 @@
-import { ChakraProvider } from '@chakra-ui/react'
+import { ChakraProvider, DarkMode } from '@chakra-ui/react'
 import { AuthProvider } from 'contexts/auth'
 import { DatabaseProvider } from 'contexts/database'
 import { HashRouter } from 'react-router-dom'
@@ -14,7 +14,9 @@ const Providers = ({ children }: Props) => {
         <AuthProvider>
           <DatabaseProvider>
             <HashRouter>
-              {children}
+              <DarkMode>
+                {children}
+              </DarkMode>
             </HashRouter>
           </DatabaseProvider>
         </AuthProvider>
