@@ -1,7 +1,7 @@
 {
   "name": "meet",
   "version": "0.1.0",
-  "homepage": "meet.nicogalin.com/",
+  "homepage": "nico-galin.github.io/",
   "private": true,
   "dependencies": {
     "@chakra-ui/react": "^2.1.2",
