@@ -28,11 +28,10 @@ const AuthProvider = (props: any) => {
   const signIn = async (email: string) => {
     try {
       const actionCodeSettings = {
-        url: "https://meet.nicogalin.com/verify",
+        url: "https://meet.nicogalin.com/#/verify",
         handleCodeInApp: true,
       }
       await sendSignInLinkToEmail(auth, email, actionCodeSettings).then(() => {
-        console.log("done: ", email)
       })
     } catch (e) {
       console.log(e);

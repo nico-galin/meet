@@ -15,24 +15,27 @@ interface Props {}
 const Verify = ({ }: Props) => {
   const { auth } = useAuth();
   const navigate = useNavigate();
-  let localEmail = useLocalStorage("emailForLogin", null)
 
   useEffect(() => {
-    if (isSignInWithEmailLink(auth, window.location.href)) {
-      let email = localEmail.toString();
-      if (!email) {
-        const res = window.prompt('Please provide your email for confirmation');
-        email = !!res ? res : "";
-      } 
-      signInWithEmailLink(auth, email, window.location.href)
-        .then((result) => {
-          window.localStorage.removeItem('emailForLogin');
-          navigate("/home");
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+    const init = async () => {
+      let localEmail = await window.localStorage.getItem("emailForLogin");
+      if (isSignInWithEmailLink(auth, window.location.href)) {
+        let email = localEmail?.toString();
+        if (!email) {
+          const res = window.prompt('Please provide your email for confirmation');
+          email = !!res ? res : "";
+        } 
+        signInWithEmailLink(auth, email, window.location.href)
+          .then((result) => {
+            window.localStorage.removeItem('emailForLogin');
+            navigate("/home");
+          })
+          .catch((e) => {
+            console.log(e, email);
+          });
+      }
     }
+    init()
   }, [])
   return (
     <VStack marginTop="30vh"  alignItems="center">
