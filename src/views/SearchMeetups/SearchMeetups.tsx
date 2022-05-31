@@ -20,7 +20,7 @@ const SearchMeetups = ({ }: Props) => {
   const filters = !!user && !!user.company_name ? meetup_options[user.company_name] : [];
 
   const onSubmit = (searchText: string, filters: any) => {
-    executeSearch({ navigate, destination: "browse", filters, searchText })
+    executeSearch({ navigate, options: { destination: "browse", filters, searchText }})
   }
 
   return (

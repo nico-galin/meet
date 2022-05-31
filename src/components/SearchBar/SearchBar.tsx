@@ -37,10 +37,10 @@ const SearchBar = (props: any) => {
 }
 
 const SearchBarInner = ({ filters, placeholder = "Search...", onFocus, onChange, onSubmit }: Props) => {
-  const defaultFilters = filters.map(f => ({id: f.id, values: []} as selectedFilter));
+  const defaultFilters = !!filters ? filters.map(f => ({id: f.id, values: []} as selectedFilter)) : [];
   const [searchText, setSearchText] = useState("");
   const [togglesOpen, setTogglesOpen] = useState(false);
-  const [curFilterId, setCurFilterId] = useState<string>(filters[0].id);
+  const [curFilterId, setCurFilterId] = useState<string>(!!filters && filters.length > 0 ? filters[0].id : "");
   const [selectedFilters, setSelectedFilters] = useState<selectedFilter[]>(defaultFilters);
   const curFilter = filters.find(f => f.id === curFilterId);
   const ref = useRef() as React.MutableRefObject<HTMLInputElement>;

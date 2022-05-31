@@ -8,6 +8,8 @@ import SearchIcon from "assets/svg/search.svg";
 import Residence from 'models/Residence';
 import { useMemo } from 'react';
 import DataCard from 'components/DataCard';
+import useAuth from 'contexts/auth/useAuth';
+import { formatName } from 'hooks/utils';
 
 interface Props {
   residence: Residence
@@ -15,6 +17,9 @@ interface Props {
 }
 
 const ResidenceCard = ({ residence, onClick }: Props) => {
+  const { user } = useAuth();
+  const company_residents = !!residence?.current_residents ? residence.current_residents.filter(r => r.company_name == user?.company_name).length : 0;
+  const total_residents = !!residence?.current_residents ? residence.current_residents.length.toString() : 0;
  return (
     <Button onClick={onClick} flexDirection="row" width="100%" height="min-content" justifyContent="start" bgColor="brand.secondaryBG" border="1px solid" borderColor="brand.secondaryStroke" borderRadius="8px" padding="15px">
       <Image src={residence.photo_uri} fit="cover" minHeight="100px" width="100px" borderRadius="8px"/>
@@ -25,9 +30,9 @@ const ResidenceCard = ({ residence, onClick }: Props) => {
           <Text fontSize="xs" textAlign="start" color="brand.secondary">{residence.address}, {residence.city}, {residence.state} {residence.zip}</Text>
         </Box>
         <HStack>
-          <DataCard label="Rating" data={!!residence.rating ? residence.rating.toString() : "None"}/>
-          <DataCard label={` Employees`} data={"0"}/>
-          <DataCard label={`Total Residents`} data={residence.current_residents.length.toString()}/>
+          {!!residence.rating && <DataCard label="Rating" data={residence.rating.toString()} />}
+          {!!user && !!user.company_name && <DataCard label={formatName(user.company_name)} data={company_residents.toString()}/>}
+          <DataCard label={`Total Residents`} data={total_residents.toString()}/>
         </HStack>
       </VStack>
     </Button>

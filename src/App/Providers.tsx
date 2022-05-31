@@ -1,5 +1,6 @@
 import { ChakraProvider } from '@chakra-ui/react'
 import { AuthProvider } from 'contexts/auth'
+import { DatabaseProvider } from 'contexts/database'
 import { HashRouter } from 'react-router-dom'
 import theme from './theme'
 
@@ -11,9 +12,11 @@ const Providers = ({ children }: Props) => {
   return (
       <ChakraProvider theme={theme}>
         <AuthProvider>
-          <HashRouter>
-            {children}
-          </HashRouter>
+          <DatabaseProvider>
+            <HashRouter>
+              {children}
+            </HashRouter>
+          </DatabaseProvider>
         </AuthProvider>
       </ChakraProvider>
   )

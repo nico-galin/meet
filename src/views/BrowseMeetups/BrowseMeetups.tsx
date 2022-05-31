@@ -27,7 +27,11 @@ const BrowseMeetups = ({ }: Props) => {
   ]
 
   const handleSubmit = () => {
-    executeSearch({ navigate, searchText, filters: selectedFilters });
+    executeSearch({ navigate, options: {searchText, filters: selectedFilters }});
+  }
+
+  const handleClick = (id: string) => {
+    executeSearch({ navigate, options: { id }})
   }
 
   const res = useMemo(() => {

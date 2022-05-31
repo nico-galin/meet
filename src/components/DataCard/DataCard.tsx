@@ -8,7 +8,7 @@ interface Props {
 }
 
 const DataCard = ({ label, data, size }: Props) => (
-  <Box bgColor="brand.tertiaryBG" padding={size === "sm" ? "6px" : "8px"} flex="1" minW="140px" alignItems="start" borderRadius="10px" border="1px solid" borderColor="brand.tertiaryStroke">
+  <Box bgColor="brand.secondaryBG" padding={size === "sm" ? "6px" : "8px"} flex="1" minW="120px" alignItems="start" borderRadius="10px" border="0.5px solid" borderColor="brand.tertiaryStroke">
     <Text fontSize="xs" fontWeight="semibold" textAlign="start" color="brand.secondary">{label}</Text>
     {size!== "sm" && <StackDivider height="3px" />}
     <Text textAlign="start" fontSize="s">{data}</Text>

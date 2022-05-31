@@ -12,8 +12,9 @@ export interface ResidenceRating {
 }
 
 export interface Resident {
-  expiration: string
-  user: PublicUser
+  expiration?: string
+  company_name: string
+  userId: string
 }
 
 export interface Residence {
@@ -29,7 +30,8 @@ export interface Residence {
   current_residents: Resident[]
   past_residents: Resident[]
   group_chats: GroupChat[]
-  pending_review?: boolean
+  pending_review: boolean
+  creatorId: string
 }
 
 export default Residence;

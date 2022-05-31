@@ -2,17 +2,20 @@ import { useNavigate } from 'react-router-dom'
 
 interface Props {
   navigate: any
-  destination?: string
-  searchText?: string
-  filters: any[]
+  options?: {
+    destination?: string
+    searchText?: string
+    filters?: any
+    id?: string
+  }
 }
 
-const executeSearch = ({ navigate, destination = "", searchText, filters}: Props) => {
+const executeSearch = ({ navigate, options}: Props) => {
   let query = `?`;
-  if (!!searchText) query += `search=${searchText}`
+  if (!!options?.searchText) query += `search=${options.searchText}`
   navigate({
-    pathname: destination,
-    search: query
+    pathname: options?.destination,
+    search: !!options?.id ? `id=${options.id}` : query
   })
 }
 

@@ -4,7 +4,7 @@ import User, { PublicUser } from 'models/User'
 
 export interface AuthContextValues {
   user: User | undefined
-  isSignedIn: boolean
+  isAuthenticated: boolean
   publicUser: PublicUser | undefined
   loading: boolean
   auth: any
@@ -14,7 +14,7 @@ export interface AuthContextValues {
 
 const AuthContext = createContext<AuthContextValues>({
   user: undefined,
-  isSignedIn: false,
+  isAuthenticated: false,
   publicUser: undefined,
   loading: false,
   auth: null,

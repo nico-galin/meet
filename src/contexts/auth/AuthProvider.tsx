@@ -7,8 +7,6 @@ import { getAuth, sendSignInLinkToEmail } from "firebase/auth";
 import AuthContext from './AuthContext'
 import User, { PublicUser } from 'models/User'
 
-console.log(process.env)
-
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -18,11 +16,13 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_FIREBASE_APP_ID
 };
 
+const app = initializeApp(firebaseConfig)
+
 const AuthProvider = (props: any) => {
-  const [auth, _] = useState(getAuth(initializeApp(firebaseConfig)));
-  const [user, setUser] = useState<User>({ company_name: "apple"} as User);
+  const auth = getAuth(app);
+  const [user, setUser] = useState<User>();
   const [publicUser, setPublicUser] = useState<PublicUser>();
-  const [isSignedIn, setIsSignedIn] = useState(false);
+  const [isAuthenticated, setisAuthenticated] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const signIn = async (email: string) => {
@@ -60,7 +60,7 @@ const AuthProvider = (props: any) => {
     <AuthContext.Provider
       value={{
         user,
-        isSignedIn,
+        isAuthenticated,
         publicUser,
         loading,
         auth,

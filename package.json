@@ -1,7 +1,7 @@
 {
   "name": "meet",
   "version": "0.1.0",
-  "homepage": "https://nico-galin.github.io/meet/",
+  "homepage": "https://meet.nicogalin.com",
   "private": true,
   "dependencies": {
     "@chakra-ui/react": "^2.1.2",
@@ -22,7 +22,7 @@
     "react-icons": "^3.0.0",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
-    "typescript": "^4.6.3",
+    "typescript": "^4.7.2",
     "web-vitals": "^0.2.2"
   },
   "scripts": {

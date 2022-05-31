@@ -2,7 +2,7 @@ import * as React from "react"
 import {
   Box, Image, Link,
 } from "@chakra-ui/react"
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import Providers from "./Providers"
 import NavBar from "./components/NavBar";
 import Home from "../views/Home";
@@ -16,6 +16,7 @@ import Login from "views/Login";
 import BrowseHousing from "views/BrowseHousing";
 import SearchHousing from "views/SearchHousing";
 import Verify from "views/Verify";
+import useAuth from "contexts/auth/useAuth";
 
 const App = () => (
   <Providers>
@@ -33,25 +34,7 @@ const App = () => (
           },
         }}
       >
-        <Routes>
-          <Route path="/home" element={<Home />} />
-
-          <Route path="/meetups" element={<SearchMeetups />} />
-          <Route path="/meetups/search" element={<SearchMeetups />} />
-          <Route path="/meetups/browse" element={<BrowseMeetups />} />
-
-          <Route path="/housing" element={<SearchHousing />} />
-          <Route path="/housing/search" element={<SearchHousing />} />
-          <Route path="/housing/browse" element={<BrowseHousing />} />
-
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/settings" element={<Settings />} />
-
-          <Route path="/login" element={<Login />} />
-          <Route path="/verify" element={<Verify />} />
-
-          <Route path="/*" element={<Home />} />
-        </Routes>
+        <Navigation />
         <Link position="absolute" bottom={8} right={8} isExternal href="https://nicogalin.com">
           <Image src={NicoLogo} width="140px" />
         </Link>
@@ -59,5 +42,33 @@ const App = () => (
     </Box>
   </Providers>
 )
+
+const Navigation = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { isAuthenticated } = useAuth();
+
+  return (
+    <Routes>
+      <Route path="/home" element={<Home />} />
+
+      <Route path="/meetups" element={<SearchMeetups />} />
+      <Route path="/meetups/search" element={<SearchMeetups />} />
+      <Route path="/meetups/browse" element={<BrowseMeetups />} />
+
+      <Route path="/housing" element={<SearchHousing />} />
+      <Route path="/housing/search" element={<SearchHousing />} />
+      <Route path="/housing/browse" element={<BrowseHousing />} />
+
+      <Route path="/profile" element={<Profile />} />
+      <Route path="/settings" element={<Settings />} />
+
+      <Route path="/login" element={<Login />} />
+      <Route path="/verify" element={<Verify />} />
+
+      <Route path="/*" element={<Home />} />
+    </Routes>
+  )
+}
 
 export default App;

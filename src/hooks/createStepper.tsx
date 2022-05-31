@@ -1,9 +1,10 @@
 import Modal from 'components/Modal'
-import { useContext, useState, useCallback, createContext } from 'react'
+import { useContext, useState, useCallback, createContext, useEffect, useRef } from 'react'
 
 interface StepperProviderProps {
   children: any
   isOpen: boolean
+  startPage: any
   onExit?: () => void
   data?: any
 }
@@ -21,6 +22,7 @@ interface StepperContextValue {
 
 interface StepperProps {
   isOpen: boolean
+  startPage?: any
   onExit?: () => void
   data?: any
   steps: any
@@ -47,14 +49,16 @@ const createStepper = (stepNames: any) => {
   const StepperProvider = ({
     children,
     isOpen,
+    startPage,
     onExit,
     data,
   }: StepperProviderProps) => {
-    const [step, setStep] = useState<number>(0)
+    const [step, setStep] = useState<number>(!!startPage ? startPage : 0)
     const [dataInternal, setDataInternal] = useState(data)
 
     const handleExit = useCallback(() => {
       setStep(0)
+      setDataInternal(data);
       if (!!onExit) onExit()
     }, [onExit])
 
@@ -116,8 +120,8 @@ const createStepper = (stepNames: any) => {
     )
   }
 
-  const Stepper = ({ isOpen, onExit, steps, data, size }: StepperProps) => (
-    <StepperProvider isOpen={isOpen} onExit={onExit} data={data}>
+  const Stepper = ({ isOpen, onExit, startPage, steps, data, size }: StepperProps) => (
+    <StepperProvider isOpen={isOpen} onExit={onExit} data={data} startPage={startPage}>
       <InnerStepper steps={steps} size={size}/>
     </StepperProvider>
   )

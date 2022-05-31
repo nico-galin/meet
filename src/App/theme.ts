@@ -20,7 +20,8 @@ const colors = {
     secondary: '#A7A7A7',
     secondaryDark: '#494949',
     
-    red: "#FF453A"
+    red: "#FF453A",
+    redLight: '#ff665e',
   },
 };
 

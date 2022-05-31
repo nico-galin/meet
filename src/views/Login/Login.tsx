@@ -1,12 +1,14 @@
 import { useCallback, useEffect, useState } from 'react'
 
 import {
-  Box, Button, FormControl, FormErrorMessage, HStack, Input, Spinner, StackDivider, Text, VStack
+  Box, Button, FormControl, FormErrorMessage, FormLabel, HStack, Input, Select, Spinner, Stack, StackDivider, Text, VStack
 } from '@chakra-ui/react'
 import useAuth from 'contexts/auth/useAuth';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { supported_companies } from 'constants/supported_companies';
 import useLocalStorage from 'hooks/useLocalStorage';
+import { formatName } from 'hooks/utils';
+import VerifyUser from './components/VerifyUser';
 
 const isValidEmail = (email: string) =>
   // eslint-disable-next-line no-useless-escape
@@ -27,10 +29,11 @@ const Login = ({ }: Props) => {
     setWaiting(localWaiting === "1" ? true : false);
   }, [localWaiting])
 
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const { register, handleSubmit, control, formState: { errors } } = useForm({
     mode: "onBlur",
     defaultValues: {
-      email: ""
+      email: "",
+      company: ""
     }
   });
 
@@ -72,7 +75,7 @@ const Login = ({ }: Props) => {
   }
 
   const handleValidation = (email: string) => {
-    return isValidEmail(email) && companySupported(email);
+    return isValidEmail(email) //&& companySupported(email);
   }
 
   return (
@@ -87,27 +90,15 @@ const Login = ({ }: Props) => {
               <FormControl isInvalid={!!errors.email}>
                 <FormErrorMessage>{!!errors.email ? "Invalid or unsupported email" : ""}</FormErrorMessage>
                 <StackDivider height="5px" />
-                <Input {...register('email', { required: true, validate: handleValidation})} type="email" bgColor="brand.tertiaryBG" placeholder="Enter your company email..."/>
+                <Input {...register('email', { required: true, validate: handleValidation})} type="email" bgColor="brand.tertiaryBG" placeholder="Enter your email..."/>
               </FormControl>
               <StackDivider height="5px" />
               <Button type="submit" width="100%" paddingX="30px" backgroundColor="brand.primary" _hover={{ backgroundColor: "brand.primaryLight"}} fontSize="sm" >Sign in</Button>
               <StackDivider height="5px" />
               <Text fontSize="xs" color="brand.secondary">*We use passwordless auth to verify your email</Text>
             </>
-            :
-            <>
-              <Text fontSize="xs">Click the link in your inbox to verify</Text>
-              <Text fontSize="xs">(Remember to check your spam folder)</Text>
-              <StackDivider height="15px" />
-              {spinning ?
-                <Spinner size="xs"/>
-              :
-                <HStack>
-                  <Button onClick={handleResend} fontSize="xs" textDecoration="underline" color="brand.secondary" padding="0" height="min-content" style={{ background: "transparent"}}>Resend Link</Button>
-                  <Button onClick={handleReset} fontSize="xs" textDecoration="underline" color="brand.secondary" padding="0" height="min-content" style={{ background: "transparent"}}>Back</Button>
-                </HStack>
-              }
-              </>
+          :
+            <VerifyUser onReset={handleReset} onResend={handleResend} spinning={spinning}/>
           }
         </form>
       </Box>
