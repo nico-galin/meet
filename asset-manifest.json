@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.js": "/meet.nicogalin.com/static/js/main.26c7e298.js",
-    "static/js/377.dda790c9.chunk.js": "/meet.nicogalin.com/static/js/377.dda790c9.chunk.js",
-    "static/media/sliders.svg": "/meet.nicogalin.com/static/media/sliders.b1bca6f9f9b8df8ae3a6daf5ac07fb69.svg",
-    "static/media/apple.logo.svg": "/meet.nicogalin.com/static/media/apple.logo.5dc4a4d6afa21e52a5c1.svg",
-    "static/media/search.svg": "/meet.nicogalin.com/static/media/search.2fe30af5e3c32f09a8fdbd2141992ad9.svg",
-    "static/media/trash.svg": "/meet.nicogalin.com/static/media/trash.7c0f315430f0b57716c5e34507c6a71d.svg",
-    "static/media/discord.svg": "/meet.nicogalin.com/static/media/discord.41024acc640f871d2227888d5c0438a9.svg",
-    "static/media/imessage.svg": "/meet.nicogalin.com/static/media/imessage.3bf601546b1830cbb04dd70bbfead208.svg",
-    "static/media/brand.logo.svg": "/meet.nicogalin.com/static/media/brand.logo.65a366282f3f12af0e1a.svg",
-    "static/media/groupme.svg": "/meet.nicogalin.com/static/media/groupme.c69369041142f6f89a9fc492288c005e.svg",
-    "static/media/messenger.svg": "/meet.nicogalin.com/static/media/messenger.a9159ccc48834b6bcec6c01a6f5d241a.svg",
-    "index.html": "/meet.nicogalin.com/index.html",
-    "static/media/chevron.up.svg": "/meet.nicogalin.com/static/media/chevron.up.712be85596210367ec72a7f0126dd8d3.svg",
-    "main.26c7e298.js.map": "/meet.nicogalin.com/static/js/main.26c7e298.js.map",
-    "377.dda790c9.chunk.js.map": "/meet.nicogalin.com/static/js/377.dda790c9.chunk.js.map"
+    "main.js": "/nico-galin.github.io/static/js/main.57707caf.js",
+    "static/js/377.dda790c9.chunk.js": "/nico-galin.github.io/static/js/377.dda790c9.chunk.js",
+    "static/media/sliders.svg": "/nico-galin.github.io/static/media/sliders.b1bca6f9f9b8df8ae3a6daf5ac07fb69.svg",
+    "static/media/apple.logo.svg": "/nico-galin.github.io/static/media/apple.logo.5dc4a4d6afa21e52a5c1.svg",
+    "static/media/search.svg": "/nico-galin.github.io/static/media/search.2fe30af5e3c32f09a8fdbd2141992ad9.svg",
+    "static/media/trash.svg": "/nico-galin.github.io/static/media/trash.7c0f315430f0b57716c5e34507c6a71d.svg",
+    "static/media/discord.svg": "/nico-galin.github.io/static/media/discord.41024acc640f871d2227888d5c0438a9.svg",
+    "static/media/imessage.svg": "/nico-galin.github.io/static/media/imessage.3bf601546b1830cbb04dd70bbfead208.svg",
+    "static/media/brand.logo.svg": "/nico-galin.github.io/static/media/brand.logo.65a366282f3f12af0e1a.svg",
+    "static/media/groupme.svg": "/nico-galin.github.io/static/media/groupme.c69369041142f6f89a9fc492288c005e.svg",
+    "static/media/messenger.svg": "/nico-galin.github.io/static/media/messenger.a9159ccc48834b6bcec6c01a6f5d241a.svg",
+    "index.html": "/nico-galin.github.io/index.html",
+    "static/media/chevron.up.svg": "/nico-galin.github.io/static/media/chevron.up.712be85596210367ec72a7f0126dd8d3.svg",
+    "main.57707caf.js.map": "/nico-galin.github.io/static/js/main.57707caf.js.map",
+    "377.dda790c9.chunk.js.map": "/nico-galin.github.io/static/js/377.dda790c9.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.26c7e298.js"
+    "static/js/main.57707caf.js"
   ]
 }
