@@ -1,6 +1,6 @@
 import * as React from "react"
 import {
-  Box, Image, Link,
+  Box, Image, Link, useColorMode,
 } from "@chakra-ui/react"
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import Providers from "./Providers"
@@ -48,6 +48,11 @@ const Navigation = () => {
   const location = useLocation();
   const { isAuthenticated } = useAuth();
 
+  const {colorMode, setColorMode } = useColorMode()
+  
+  React.useEffect(() => {
+    if (colorMode === 'light') setColorMode('dark')
+  }, [colorMode, setColorMode])
   return (
     <Routes>
       <Route path="/home" element={<Home />} />

@@ -24,7 +24,7 @@ const SearchHousing = ({ }: Props) => {
 
   return (
     <VStack alignItems="center" paddingTop="30vh">
-      <ProductHeader company={user?.company_name} product="Corporate Housing"/>
+      <ProductHeader company={user?.company_name} product="Housing"/>
       <StackDivider height="5px" />
       <SearchBar onSubmit={onSubmit} onFocus={() => window.scrollBy(0, 1000)} onChange={() => {}} filters={filters} placeholder="Search Meetups..."/>
       <Box height="800px" width="1px" />

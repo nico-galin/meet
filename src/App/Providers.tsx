@@ -14,9 +14,7 @@ const Providers = ({ children }: Props) => {
         <AuthProvider>
           <DatabaseProvider>
             <HashRouter>
-              <DarkMode>
                 {children}
-              </DarkMode>
             </HashRouter>
           </DatabaseProvider>
         </AuthProvider>
