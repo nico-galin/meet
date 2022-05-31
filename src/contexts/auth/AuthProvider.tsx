@@ -28,7 +28,7 @@ const AuthProvider = (props: any) => {
   const signIn = async (email: string) => {
     try {
       const actionCodeSettings = {
-        url: "https://nicogalin.com" /*"https://localhost:3000/verify"*/,
+        url: "https://meet.nicogalin.com/verify",
         handleCodeInApp: true,
       }
       await sendSignInLinkToEmail(auth, email, actionCodeSettings).then(() => {
