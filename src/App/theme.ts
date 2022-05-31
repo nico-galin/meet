@@ -1,7 +1,8 @@
 import { mode } from '@chakra-ui/theme-tools';
-import { extendTheme, Input } from '@chakra-ui/react'
+import { extendTheme, Input, Link } from '@chakra-ui/react'
 
 Input.defaultProps = { ...Input.defaultProps, focusBorderColor: 'blue.300' };
+Link.defaultProps = { ...Link.defaultProps, padding: "8px", borderRadius: "5px"}
 
 const colors = {
   brand: {

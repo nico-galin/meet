@@ -33,9 +33,7 @@ const BrowseHousing = ({ }: Props) => {
   useEffect(() => {
     const s = query.get("search");
     setSearchText(!!s ? s : "");
-
     const rId = query.get("id");
-    console.log(rId)
     if (!!rId) {
       setSelResidence(rId)
     } else {
@@ -45,7 +43,6 @@ const BrowseHousing = ({ }: Props) => {
 
   useEffect(() => {
     const rId = query.get("id");
-    console.log(rId)
     if (!!rId) {
       setSelResidence(rId)
     } else {
@@ -67,6 +64,14 @@ const BrowseHousing = ({ }: Props) => {
       setAddingResidence(false)
     }
     setSelResidence("")
+  }
+
+  const handleAdd = () => {
+    if (isAuthenticated) {
+      setAddingResidence(true)
+    } else {
+      navigate("/login")
+    }
   }
 
   const res = useMemo(() => {
@@ -128,7 +133,7 @@ const BrowseHousing = ({ }: Props) => {
             <Spinner margin="auto" size="md" />
           </Flex>
         :
-          <Text>Can't find what you're looking for? <Button variant="link" onClick={() => setAddingResidence(true)}>Add a new Residence</Button></Text>
+          <Text>Can't find what you're looking for? <Button variant="link" onClick={handleAdd}>Add a new Residence</Button></Text>
         }
       </Stack>
       <HousingStepper

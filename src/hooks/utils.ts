@@ -11,6 +11,9 @@ async function sha256(msg: string) {
 
 const formatName = (n: string | undefined) => {
   if (!n) return "";
+  if (n.toLowerCase() === "groupme") return "GroupMe";
+  if (n.toLowerCase() === "imessage") return "iMessage";
+  if (n.toLowerCase() === "whatsapp") return "WhatsApp";
   return n.split(" ").map(e => `${e.slice(0, 1).toUpperCase()}${e.slice(1)}`).join(" ")
 }
 

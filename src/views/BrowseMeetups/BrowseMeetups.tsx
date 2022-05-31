@@ -83,8 +83,9 @@ const BrowseMeetups = ({ }: Props) => {
         </VStack>
       </VStack>
       <Box padding="25px 15px" flex="1">
+        <Text>This feature is still in development</Text>
         {res.map((r, ind) => (
-          <Text>{r.toString()}</Text>
+          <Text>{}</Text>
         ))}
       </Box>
     </HStack>

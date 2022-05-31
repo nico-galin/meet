@@ -33,9 +33,7 @@ meetup_options = {
   ]
 };
 
-let housing_options: {[type: string]: Object};
-housing_options = {
-  "apple": [
+let housing_options = [
     {
       label: "Location",
       id: "location",
@@ -57,7 +55,6 @@ housing_options = {
         "Contractors"
       ]
     },
-  ]
-};
+];
 
 export { housing_options, meetup_options }

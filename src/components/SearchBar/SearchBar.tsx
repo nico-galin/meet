@@ -84,7 +84,7 @@ const SearchBarInner = ({ filters, placeholder = "Search...", onFocus, onChange,
                 _focus={{border: "none"}} _active={{border: "none"}}
               />
             </HStack>
-            <FilterBtn display={["block", "block", "none"]} />
+            {!!filters && filters.length > 0 && <FilterBtn display={["block", "block", "none"]} />}
           </HStack>
           {!togglesOpen &&
             <Stack direction={["column", "row"]} justifyContent="start" width="100%">
@@ -96,12 +96,12 @@ const SearchBarInner = ({ filters, placeholder = "Search...", onFocus, onChange,
             </Stack>
           }
         </VStack>
-        {togglesOpen &&
+        {!!filters && filters.length > 0 && togglesOpen &&
           <HStack justifyContent="start" alignItems="stretch" width="100%">
             <VStack minWidth="50%" >
               <VStack spacing="5px" backgroundColor="brand.secondaryBG" borderRadius="8px" padding="10px" width="100%">
-                { filters.map((f, _) => (
-                  <Button width="100%" onClick={() => setCurFilterId(f.id)}>
+                { filters.map((f, ind) => (
+                  <Button key={`sel${ind}`} width="100%" onClick={() => setCurFilterId(f.id)}>
                     <HStack justifyContent="space-between" flex={1}>
                       <Text fontSize="sm">{f.label}</Text>
                       <Text fontSize="sm" fontWeight="light">{concatString(selectedFilters.find(e => e.id === f.id)?.values?.join(", "))}</Text>
@@ -116,8 +116,9 @@ const SearchBarInner = ({ filters, placeholder = "Search...", onFocus, onChange,
             </VStack>
             <VStack flex={1} spacing="5px" backgroundColor="brand.secondaryBG" borderRadius="8px" padding="10px" alignItems="start">
               <Text fontSize="sm" fontWeight="semibold" marginLeft="5px">Choose a {!!curFilter ? curFilter.label : "field"}...</Text>
-              {!!curFilter && curFilter.options?.map(option => (
+              {!!curFilter && curFilter.options?.map((option, ind) => (
                 <Button 
+                  key={`option${ind}`}
                   onClick={
                     selectedValues?.includes(option) ?
                       () => removeFilterSelection(curFilter, option)
@@ -136,7 +137,7 @@ const SearchBarInner = ({ filters, placeholder = "Search...", onFocus, onChange,
           </HStack>
         }
       </VStack>
-      <FilterBtn display={["none", "none", "block"]} />
+      {!!filters && filters.length > 0 && <FilterBtn display={["none", "none", "block"]} />}
     </HStack>
   );
 }

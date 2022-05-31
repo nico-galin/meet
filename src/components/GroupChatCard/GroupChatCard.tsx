@@ -7,6 +7,7 @@ import { ReactComponent as TrashIcon } from "../../assets/svg/trash.svg";
 import { ReactComponent as GroupMeIcon } from "../../assets/svg/groupme.svg";
 import { ReactComponent as IMessageIcon } from "../../assets/svg/imessage.svg";
 import { ReactComponent as MessengerIcon } from "../../assets/svg/messenger.svg";
+import { formatName } from "hooks/utils";
 
 interface Props {
   groupChat: GroupChat
@@ -28,7 +29,7 @@ const GroupChatCard = ({ groupChat, onDelete, size}: Props) => {
           {flipped ?
             <Text textAlign="start" fontSize="s" fontWeight="semibold">Contact {groupChat.contact}</Text>
           :
-            <Text textAlign="start" fontSize="s" fontWeight="semibold">{!!groupChat.name ? groupChat.name : groupChat.platform}</Text>
+            <Text textAlign="start" fontSize="s" fontWeight="semibold">{!!groupChat.name ? groupChat.name : formatName(groupChat.platform)}</Text>
           }
         </HStack>
       </Button>

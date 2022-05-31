@@ -20,13 +20,13 @@ const SearchHousing = ({ }: Props) => {
   const onSubmit = (searchText: string, filters: any) => {
     executeSearch({ navigate, options: { destination: "browse", filters, searchText }})
   }
-  const filters = !!user && !!user.company_name ? housing_options[user.company_name] : [];
+  const filters = housing_options;
 
   return (
     <VStack alignItems="center" paddingTop="30vh">
       <ProductHeader company={user?.company_name} product="Housing"/>
       <StackDivider height="5px" />
-      <SearchBar onSubmit={onSubmit} onFocus={() => window.scrollBy(0, 1000)} onChange={() => {}} filters={filters} placeholder="Search Meetups..."/>
+      <SearchBar onSubmit={onSubmit} onFocus={() => window.scrollBy(0, 1000)} onChange={() => {}} filters={filters} placeholder="Search Housing..."/>
       <Box height="800px" width="1px" />
     </VStack>
   )

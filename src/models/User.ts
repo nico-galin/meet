@@ -4,6 +4,7 @@ export interface PublicUser {
   name_last: string
   name_display: string
   company_name: string
+  compaany_role: string
   profile_photo_uri: string
   linkedin_uri: string
   discord_uri: string
