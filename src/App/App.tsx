@@ -17,6 +17,7 @@ import BrowseHousing from "views/BrowseHousing";
 import SearchHousing from "views/SearchHousing";
 import Verify from "views/Verify";
 import useAuth from "contexts/auth/useAuth";
+import Support from "views/Support";
 
 const App = () => (
   <Providers>
@@ -72,6 +73,8 @@ const Navigation = () => {
 
       <Route path="/login" element={<Login />} />
       <Route path="/verify" element={<Verify />} />
+
+      <Route path="/support" element={<Support />} />
 
       <Route path="/*" element={<Home />} />
     </Routes>
