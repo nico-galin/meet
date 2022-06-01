@@ -2,10 +2,12 @@ import React, { useCallback, useEffect, useState } from 'react'
 import useLocalStorage from 'hooks/useLocalStorage'
 
 import { initializeApp } from "firebase/app";
-import { getAuth, sendSignInLinkToEmail } from "firebase/auth";
+import { getAuth, sendSignInLinkToEmail, signInWithEmailLink } from "firebase/auth";
 
 import AuthContext from './AuthContext'
 import User, { PublicUser } from 'models/User'
+import { useNavigate } from 'react-router-dom';
+import { supported_companies } from 'constants/supported_companies';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -19,6 +21,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig)
 
 const AuthProvider = (props: any) => {
+  const navigate = useNavigate();
   const auth = getAuth(app);
   const [user, setUser] = useState<User>();
   const [publicUser, setPublicUser] = useState<PublicUser>();
@@ -28,7 +31,7 @@ const AuthProvider = (props: any) => {
   const signIn = async (email: string) => {
     try {
       const actionCodeSettings = {
-        url: "https://meet.nicogalin.com/#/verify",
+        url: process.env.REACT_APP_ENVIRONMENT === "local" ? "http://localhost:3000/#/verify" : "https://meet.nicogalin.com/#/verify",
         handleCodeInApp: true,
       }
       await sendSignInLinkToEmail(auth, email, actionCodeSettings).then(() => {
@@ -38,9 +41,27 @@ const AuthProvider = (props: any) => {
     }
   }
 
+  const verifyEmail = async (email: string, href: string) => {
+    const res = await signInWithEmailLink(auth, email, href);
+    if (!!res && !!res.user) {
+      setUser({
+        id: res.user.uid,
+        createdAt: !!res.user.metadata.creationTime ? res.user.metadata.creationTime : "",
+        email: !!res.user.email ? res.user.email : "",
+      })
+      setisAuthenticated(true);
+    }
+    return res;
+  }
+
   const signOut =  async () => {
     try {
-
+      await auth.signOut();
+      setisAuthenticated(false);
+      setUser(undefined);
+      window.localStorage.setItem("emailForLogin", "");
+      window.localStorage.setItem("waitingForVerification", "0");
+      navigate("/login")
     } catch (e) {
       console.log(e);
     }
@@ -48,9 +69,25 @@ const AuthProvider = (props: any) => {
 
   useEffect(() => {
     // Get user here
-    const unsubscribe = auth.onAuthStateChanged((firebaseUser) => {
-      console.log("USER OBJ: ", firebaseUser)
-      //setUser(firebaseUser);
+    const unsubscribe = auth.onAuthStateChanged((fbUser) => {
+      if (!fbUser) return;
+      const email = !!fbUser.email ? fbUser.email : "";
+      let userCompany = "";
+      for (let company of supported_companies) {
+        for (let domain of company.email_domains) {
+          if (email.toLowerCase().endsWith(domain.toLowerCase())) {
+            userCompany = company.name;
+            break;
+          }
+        }
+      }
+      setUser({
+        id: fbUser.uid,
+        createdAt: !!fbUser.metadata.creationTime ? fbUser.metadata.creationTime : "",
+        email: email,
+        company_name: userCompany,
+      });
+      setisAuthenticated(true)
     })
     return unsubscribe;
   }, [])
@@ -64,7 +101,8 @@ const AuthProvider = (props: any) => {
         loading,
         auth,
         signIn,
-        signOut
+        signOut,
+        verifyEmail,
       }}
     >
       {props.children}

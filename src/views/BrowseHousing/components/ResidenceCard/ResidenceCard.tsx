@@ -21,15 +21,15 @@ const ResidenceCard = ({ residence, onClick }: Props) => {
   const company_residents = !!residence?.current_residents ? residence.current_residents.filter(r => r.company_name == user?.company_name).length : 0;
   const total_residents = !!residence?.current_residents ? residence.current_residents.length.toString() : 0;
  return (
-    <Button onClick={onClick} flexDirection="row" width="100%" height="min-content" justifyContent="start" bgColor="brand.secondaryBG" border="1px solid" borderColor="brand.secondaryStroke" borderRadius="8px" padding="15px">
-      <Image src={residence.photo_uri} fit="cover" minHeight="100px" width="100px" borderRadius="8px"/>
-      <StackDivider width="15px" />
-      <VStack alignItems="start" >
-        <Box alignItems="start" justifyContent="start">
-          <Text fontWeight="semibold" textAlign="left" height="min-content">{residence.name}</Text>
-          <Text fontSize="xs" textAlign="start" color="brand.secondary">{residence.address}, {residence.city}, {residence.state} {residence.zip}</Text>
+    <Button width="100%" onClick={onClick} flexDirection="row" height="min-content" justifyContent="start" bgColor="brand.secondaryBG" border="1px solid" borderColor="brand.secondaryStroke" borderRadius="8px" padding={["8px", "15px"]}>
+      <Image src={residence.photo_uri} fit="cover" minHeight={["50px", "100px"]} width={["50px", "100px"]} borderRadius="8px"/>
+      <StackDivider width={["5px", "15px"]} />
+      <VStack alignItems="start" width="min-content">
+        <Box alignItems="start" justifyContent="start" minW="min-content">
+          <Text fontWeight="semibold" textAlign="left" fontSize={["sm", "md"]}>{residence.name}</Text>
+          <Text fontSize={["xx-small", "xs"]} textAlign="start" color="brand.secondary">{residence.address}, {residence.city}, {residence.state} {residence.zip}</Text>
         </Box>
-        <HStack>
+        <HStack spacing="10px" display={["none", "flex"]}>
           {!!residence.rating && <DataCard label="Rating" data={residence.rating.toString()} />}
           {!!user && !!user.company_name && <DataCard label={formatName(user.company_name)} data={company_residents.toString()}/>}
           <DataCard label={`Total Residents`} data={total_residents.toString()}/>

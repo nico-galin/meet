@@ -73,7 +73,7 @@ const AddGroupChat = ({ useStepper }: Props) => {
           <Text textAlign="left" fontSize="sm" color="brand.secondary">(These will expire in 6 months)</Text>
         </Box>
         <Box width="100%" justifyContent="center">
-          <Stack width="50%" margin="auto" spacing="20px">
+          <Stack maxWidth={["100%", "50%"]} margin="auto" spacing="20px">
             <HStack>
               <Controller 
                 render={({

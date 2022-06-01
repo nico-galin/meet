@@ -13,26 +13,31 @@ import { isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth';
 interface Props {}
 
 const Verify = ({ }: Props) => {
-  const { auth } = useAuth();
+  const { auth, verifyEmail } = useAuth();
+  const [failed, setFailed] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const init = async () => {
-      let localEmail = await window.localStorage.getItem("emailForLogin");
+      let localEmail:(string | undefined | null) = await window.localStorage.getItem("emailForLogin");
+      localEmail = localEmail?.slice(1, localEmail.length - 1)
       if (isSignInWithEmailLink(auth, window.location.href)) {
         let email = localEmail?.toString();
         if (!email) {
           const res = window.prompt('Please provide your email for confirmation');
           email = !!res ? res : "";
         } 
-        signInWithEmailLink(auth, email, window.location.href)
-          .then((result) => {
-            window.localStorage.removeItem('emailForLogin');
-            navigate("/home");
-          })
-          .catch((e) => {
-            console.log(e, email);
-          });
+        verifyEmail(email, window.location.href).then(() => {
+          window.localStorage.setItem("emailForLogin", "");
+          window.localStorage.setItem("waitingForVerification", "0");
+          setFailed(false);
+          navigate("/home");
+        }).catch((e) => {
+          console.log(e);
+          setFailed(true);
+        })
+      } else {
+        navigate("/login")
       }
     }
     init()

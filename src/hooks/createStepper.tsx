@@ -32,6 +32,7 @@ interface StepperProps {
 interface InnerStepperProps {
   steps: any
   size?: string
+  startPage?: any
 }
 
 const createStepper = (stepNames: any) => {
@@ -122,7 +123,7 @@ const createStepper = (stepNames: any) => {
 
   const Stepper = ({ isOpen, onExit, startPage, steps, data, size }: StepperProps) => (
     <StepperProvider isOpen={isOpen} onExit={onExit} data={data} startPage={startPage}>
-      <InnerStepper steps={steps} size={size}/>
+      <InnerStepper steps={steps} size={size} />
     </StepperProvider>
   )
 

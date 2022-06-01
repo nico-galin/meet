@@ -1,9 +1,9 @@
 import { useState } from 'react'
 
-const useLocalStorage = async (key: string, initialValue: any) => {
-  const [storedValue, setStoredValue] = useState(async () => {
+const useLocalStorage = (key: string, initialValue: any) => {
+  const [storedValue, setStoredValue] = useState(() => {
     try {
-      const item = await window.localStorage.getItem(key)
+      const item = window.localStorage.getItem(key)
       return item ? JSON.parse(item) : initialValue
     } catch (error) {
       console.log(error)

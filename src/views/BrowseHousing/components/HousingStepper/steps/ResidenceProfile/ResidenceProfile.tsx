@@ -19,7 +19,7 @@ const ResidenceProfile = ({ useStepper }: Props) => {
   const navigate = useNavigate();
   const { onNextStep, data, setStep } = useStepper();
   const { deleteGroupChat, joinResidence, leaveResidence } = useDatabase();
-  const residence = data.residence;
+  const residence = data?.residence;
   const { user, isAuthenticated } = useAuth();
   const formattedCompanyName = formatName(user?.company_name);
 
@@ -42,20 +42,23 @@ const ResidenceProfile = ({ useStepper }: Props) => {
     }
   }
 
-  const companyResidents = useMemo(() => residence.group_chats.filter((gc: GroupChat) => (gc.restricted && gc.company === user?.company_name)), [residence])
+  const companyGCs = useMemo(() => residence?.group_chats.filter((gc: GroupChat) => (gc.restricted && gc.company === user?.company_name)), [residence])
+  const companyResidents = useMemo(() => residence?.current_residents.filter((res: Resident) => (res.company_name === user?.company_name)), [residence])
+
+  if (!residence) return <></>;
 
   return (
       <Stack spacing="20px" width="100%" textAlign="center" alignItems="start">
         <Box>
-          <Text textAlign="left" fontWeight="semibold" fontSize="2xl">{residence.name}</Text>
+          <Text textAlign="left" fontWeight="semibold" fontSize="2xl">{residence?.name}</Text>
           <Text textAlign="left" fontSize="sm" color="brand.secondary">{formatAddress(residence)}</Text>
         </Box>
-        <HStack spacing="30px" alignItems="start">
+        <Stack direction={['column', 'row']} spacing="30px" alignItems="start">
           <Stack flex="1">
             <Image flex="1" src={residence.photo_uri} fit="cover" borderRadius="15px"/>
             <HStack>
-              <DataCard size="sm" label={`${formattedCompanyName} Coworkers`} data={isAuthenticated ? companyResidents.length : "?"} />
-              <DataCard size="sm" label="Total Residents" data={"0"} />
+              <DataCard size="sm" label={`${formattedCompanyName} Employees`} data={isAuthenticated ? companyResidents.length : "?"} />
+              <DataCard size="sm" label="Total Residents" data={residence.current_residents.length} />
             </HStack>
             {/*}
             <Button width="100%" fontWeight="xs" bgColor="brand.tertiaryBG" borderWidth="1px" borderColor="brand.tertiaryStroke">
@@ -63,8 +66,8 @@ const ResidenceProfile = ({ useStepper }: Props) => {
             </Button>
             */}
           </Stack>
-          <Stack spacing="15px" flex="1">
-            <Stack flex="1" textAlign="left">
+          <Stack spacing="15px" flex="1" width="100%">
+            <Stack flex="1" textAlign="left" >
               <Box>
                 <Text fontSize="xl" fontWeight="semibold">{!!formattedCompanyName ? formattedCompanyName : "Company"} Group Chats</Text>
                 {!!formattedCompanyName ? 
@@ -74,7 +77,7 @@ const ResidenceProfile = ({ useStepper }: Props) => {
                 }
               </Box>
               <Stack>
-                {companyResidents.map((gc: GroupChat, ind: number) => (
+                {companyGCs.map((gc: GroupChat, ind: number) => (
                   <GroupChatCard key={`co${ind}`} groupChat={gc} onDelete={gc.creatorId === user?.id ? () => deleteGroupChat(gc) : undefined}/>
                 ))}
               </Stack>
@@ -92,7 +95,7 @@ const ResidenceProfile = ({ useStepper }: Props) => {
             </Stack>
             <Button variant="link" width="min-content" justifyContent="start" padding="0" color="brand.secondary" fontWeight="sm" fontSize="xs" onClick={handleAddGC}>Add group chat</Button>
           </Stack>
-        </HStack>
+        </Stack>
         <HStack width="100%">
           {residence.creatorId === user?.id && <Button color="brand.red" onClick={() => setStep(Steps.CONFIRM_DELETE_RESIDENCE)}>Delete</Button>}
           {residence.current_residents.find((r: Resident) => r.userId === user?.id) ?

@@ -21,6 +21,7 @@ interface Props {
   onFocus?: (...args: any) => void
   onChange?: (...args: any) => void
   onSubmit?: (searchText: string, filters: any[]) => void
+  onCreate?: () => void
 }
 
 const concatString = (str: string | undefined) => {
@@ -36,7 +37,7 @@ const SearchBar = (props: any) => {
   return <SearchBarInner {...props} filters={props?.filters.map((o: any) => o as searchFilter)}/>
 }
 
-const SearchBarInner = ({ filters, placeholder = "Search...", onFocus, onChange, onSubmit }: Props) => {
+const SearchBarInner = ({ filters, placeholder = "Search...", onFocus, onChange, onSubmit, onCreate }: Props) => {
   const defaultFilters = !!filters ? filters.map(f => ({id: f.id, values: []} as selectedFilter)) : [];
   const [searchText, setSearchText] = useState("");
   const [togglesOpen, setTogglesOpen] = useState(false);
@@ -90,7 +91,7 @@ const SearchBarInner = ({ filters, placeholder = "Search...", onFocus, onChange,
             <Stack direction={["column", "row"]} justifyContent="start" width="100%">
               <HStack width="100%">
                 <Button onClick={() => handleSubmit(searchText)} flex="1" paddingX="30px" backgroundColor="brand.primary" _hover={{ backgroundColor: "brand.primaryLight"}} fontSize="sm">Go</Button>
-                <Button paddingX="30px" fontSize="sm">Create</Button>
+                {!!onCreate && <Button onClick={onCreate} paddingX="30px" fontSize="sm">Create</Button>}
               </HStack>
               <Button onClick={() => handleSubmit("", [])} paddingX="30px" fontSize="sm">Browse all</Button>
             </Stack>

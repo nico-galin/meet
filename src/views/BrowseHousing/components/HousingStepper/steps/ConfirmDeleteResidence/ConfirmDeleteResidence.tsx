@@ -45,7 +45,7 @@ const ConfirmDeleteResidence = ({ useStepper }: Props) => {
           <Text textAlign="left" fontSize="sm" color="brand.secondary">(This action is irreversible)</Text>
         </Box>
         <Box width="100%" justifyContent="center">
-          <Stack width="50%" margin="auto">
+          <Stack maxWidth={["100%", "50%"]} margin="auto">
             <Controller 
               render={({
                 field,

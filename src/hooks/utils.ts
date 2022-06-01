@@ -18,6 +18,7 @@ const formatName = (n: string | undefined) => {
 }
 
 const formatAddress = (res: Residence) => {
+  if (!res) return "";
   return `${res.address}, ${res.city}, ${res.state} ${res.zip}`
 }
 

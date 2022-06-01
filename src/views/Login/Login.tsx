@@ -9,6 +9,7 @@ import { supported_companies } from 'constants/supported_companies';
 import useLocalStorage from 'hooks/useLocalStorage';
 import { formatName } from 'hooks/utils';
 import VerifyUser from './components/VerifyUser';
+import { useNavigate } from 'react-router-dom';
 
 const isValidEmail = (email: string) =>
   // eslint-disable-next-line no-useless-escape
@@ -19,7 +20,8 @@ const isValidEmail = (email: string) =>
 interface Props {}
 
 const Login = ({ }: Props) => {
-  const { signIn } = useAuth();
+  const navigate = useNavigate();
+  const { signIn, isAuthenticated } = useAuth();
   const [localEmail, setLocalEmail] = useLocalStorage("emailForLogin", "");
   const [localWaiting, setLocalWaiting] = useLocalStorage("waitingForVerification", "0");
   const [waiting, setWaiting] = useState(false);
@@ -28,6 +30,10 @@ const Login = ({ }: Props) => {
   useEffect(() => {
     setWaiting(localWaiting === "1" ? true : false);
   }, [localWaiting])
+
+  useEffect(() => {
+    if (isAuthenticated) navigate("/home")
+  }, [isAuthenticated])
 
   const { register, handleSubmit, control, formState: { errors } } = useForm({
     mode: "onBlur",
@@ -75,7 +81,7 @@ const Login = ({ }: Props) => {
   }
 
   const handleValidation = (email: string) => {
-    return isValidEmail(email) //&& companySupported(email);
+    return isValidEmail(email) && companySupported(email);
   }
 
   return (

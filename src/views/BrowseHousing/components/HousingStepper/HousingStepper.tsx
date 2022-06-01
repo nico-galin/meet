@@ -26,8 +26,8 @@ export interface Props {
 }
 
 const HousingStepper = ({ isOpen, startPage, onExit, data}: Props) => {
-  const { useStepper, Stepper }  = useMemo(() => createStepper(Steps), [data]);
-  
+  const { useStepper, Stepper }  = useMemo(() => createStepper(Steps), [data, startPage]);
+
   return (
     <Stepper
       data={data}

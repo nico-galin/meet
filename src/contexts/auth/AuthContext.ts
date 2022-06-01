@@ -10,6 +10,7 @@ export interface AuthContextValues {
   auth: any
   signIn: (email: string) => void
   signOut: () => void
+  verifyEmail: (email: string, href: string) => Promise<any>
 }
 
 const AuthContext = createContext<AuthContextValues>({
@@ -19,7 +20,8 @@ const AuthContext = createContext<AuthContextValues>({
   loading: false,
   auth: null,
   signIn: () => {},
-  signOut: () => {}
+  signOut: () => {},
+  verifyEmail: () => new Promise(() => {}),
 });
 
 export default AuthContext

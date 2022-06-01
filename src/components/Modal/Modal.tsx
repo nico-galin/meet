@@ -13,9 +13,9 @@ interface Props {
 }
 
 const CustomModal = ({ onClose, size = "3xl", children }: Props) => (
-  <Modal isCentered isOpen onClose={onClose} size={size}>
+  <Modal isCentered isOpen onClose={onClose} size={size} scrollBehavior="inside">
     <ModalOverlay />
-    <ModalContent marginX="10px" borderRadius="16px">
+    <ModalContent marginX="10px" borderRadius="16px" maxHeight="90%">
       <ModalBody
         backgroundColor="brand.secondaryBG"
         padding="20px"

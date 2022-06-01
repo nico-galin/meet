@@ -37,7 +37,7 @@ const ConfirmJoinResidence = ({ useStepper }: Props) => {
           <Text textAlign="left" fontSize="sm" color="brand.secondary">(These changes will be reflected across the app)</Text>
         </Box>
         <Box width="100%" justifyContent="center">
-          <Stack width="50%" margin="auto">
+          <Stack maxWidth={["100%", "50%"]} margin="auto">
             <Controller 
               render={({
                 field,

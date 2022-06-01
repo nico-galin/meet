@@ -11,13 +11,13 @@ interface Props {
 const Providers = ({ children }: Props) => {
   return (
       <ChakraProvider theme={theme}>
-        <AuthProvider>
-          <DatabaseProvider>
-            <HashRouter>
-                {children}
-            </HashRouter>
-          </DatabaseProvider>
-        </AuthProvider>
+        <HashRouter>
+          <AuthProvider>
+            <DatabaseProvider>
+              {children}
+            </DatabaseProvider>
+          </AuthProvider>
+        </HashRouter>
       </ChakraProvider>
   )
 }

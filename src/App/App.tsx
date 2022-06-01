@@ -7,7 +7,7 @@ import Providers from "./Providers"
 import NavBar from "./components/NavBar";
 import Home from "../views/Home";
 import SearchMeetups from "../views/SearchMeetups";
-import Housing from "../views/Housing";
+import People from "../views/People";
 import Profile from "../views/Profile";
 import Settings from "../views/Settings";
 import NicoLogo from "assets/png/watermark_white.png"
@@ -36,7 +36,7 @@ const App = () => (
       >
         <Navigation />
         <Link position="absolute" bottom={8} right={8} isExternal href="https://nicogalin.com">
-          <Image src={NicoLogo} width="140px" />
+          <Image src={NicoLogo} width={["100px", "140px"]} />
         </Link>
       </Box>
     </Box>
@@ -56,6 +56,8 @@ const Navigation = () => {
   return (
     <Routes>
       <Route path="/home" element={<Home />} />
+
+      <Route path="/people" element={<People />} />
 
       <Route path="/meetups" element={<SearchMeetups />} />
       <Route path="/meetups/search" element={<SearchMeetups />} />
