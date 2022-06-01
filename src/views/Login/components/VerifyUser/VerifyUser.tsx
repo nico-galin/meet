@@ -18,9 +18,11 @@ interface Props {
 const VerifyUser = ({ onReset, onResend, spinning }: Props) => {
   return (
     <>
-      <Text fontSize="xs">Click the link in your inbox to verify</Text>
+      <Text fontSize="xs">Open the link in your email <b>on this device</b></Text>
       <Text fontSize="xs">(Remember to check your spam folder)</Text>
-      <StackDivider height="15px" />
+      <br/>
+      <Text fontSize="xs">This may require sending the link from your corporate device to this one.</Text>
+      <StackDivider height="20px" />
       {spinning ?
         <Spinner size="xs"/>
       :

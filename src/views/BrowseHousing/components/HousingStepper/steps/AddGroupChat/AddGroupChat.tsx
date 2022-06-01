@@ -73,8 +73,8 @@ const AddGroupChat = ({ useStepper }: Props) => {
           <Text textAlign="left" fontSize="sm" color="brand.secondary">(These will expire in 6 months)</Text>
         </Box>
         <Box width="100%" justifyContent="center">
-          <Stack maxWidth={["100%", "50%"]} margin="auto" spacing="20px">
-            <HStack>
+          <Stack margin="auto" spacing="20px">
+            <HStack alignItems="end">
               <Controller 
                 render={({
                   field,
@@ -120,6 +120,12 @@ const AddGroupChat = ({ useStepper }: Props) => {
                       </option>
                       <option value="imessage">
                         iMessage
+                      </option>
+                      <option value="signal">
+                        Signal
+                      </option>
+                      <option value="wechat">
+                        WeChat
                       </option>
                     </Select>
                   </FormControl>   

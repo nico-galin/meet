@@ -33,7 +33,6 @@ const DatabaseProvider = (props: any) => {
       const resp = await setDoc(doc(db, residenceDoc, id), {
         ...residence,
         id,
-        photo_uri: "",
         current_residents: [],
         past_residents: [],
         pending_review: true,
@@ -87,7 +86,7 @@ const DatabaseProvider = (props: any) => {
       return;
     }
     try {
-      const res = deleteDoc(doc(db, residenceDoc, residence.id));
+      const res = await deleteDoc(doc(db, residenceDoc, residence.id));
       refreshResidences();
       return res;
     } catch (e) {

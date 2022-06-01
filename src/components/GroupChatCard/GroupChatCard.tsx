@@ -7,6 +7,8 @@ import { ReactComponent as TrashIcon } from "../../assets/svg/trash.svg";
 import { ReactComponent as GroupMeIcon } from "../../assets/svg/groupme.svg";
 import { ReactComponent as IMessageIcon } from "../../assets/svg/imessage.svg";
 import { ReactComponent as MessengerIcon } from "../../assets/svg/messenger.svg";
+import { ReactComponent as WhatsAppIcon } from "../../assets/svg/whatsapp.svg";
+import { ReactComponent as SignalIcon } from "../../assets/svg/signal.svg";
 import { formatName } from "hooks/utils";
 
 interface Props {
@@ -26,6 +28,8 @@ const GroupChatCard = ({ groupChat, onDelete, size}: Props) => {
           {groupChat.platform === "groupme" && <Box marginRight="-2px"><GroupMeIcon width="30px"/></Box>}
           {groupChat.platform === "imessage" && <Box marginLeft="3px" marginRight="3px"><IMessageIcon width="22px"/></Box>}
           {groupChat.platform === "messenger" && <Box><MessengerIcon width="30px"/></Box>}
+          {groupChat.platform === "whatsapp" && <Box marginLeft="3px" marginRight="2px"><WhatsAppIcon width="25px" /></Box>}
+          {groupChat.platform === "signal" && <Box marginLeft="3px" marginRight="3px"><SignalIcon width="24px"/></Box>}
           {flipped ?
             <Text textAlign="start" fontSize="s" fontWeight="semibold">Contact {groupChat.contact}</Text>
           :

@@ -24,7 +24,8 @@ export interface Residence {
   city: string
   state: string
   zip: string
-  photo_uri: string,
+  photo_uri: string
+  uri: string
   rating?: number
   rating_list: ResidenceRating[]
   current_residents: Resident[]

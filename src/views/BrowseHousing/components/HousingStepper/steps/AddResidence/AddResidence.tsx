@@ -27,19 +27,21 @@ const AddResidence = ({ useStepper }: Props) => {
 
   const onSubmitForm = async (e: any) => {
     e.preventDefault();
-    handleSubmit((data) => {
+    handleSubmit((formData) => {
       setData((prev: any) => ({
         ...prev,
         addResidence: {
-          name: formatName(data.name),
-          address: formatName(data.address),
-          city: formatName(data.city),
-          state: data.state.toUpperCase(),
-          zip: data.zip.slice(0, 6),
-          group_chats: !!prev?.addResidence?.group_chats ? prev.addResidence.group_chats : []
+          ...formData,
+          name: formatName(formData.name),
+          address: formatName(formData.address),
+          city: formatName(formData.city),
+          state: formData.state.toUpperCase(),
+          zip: formData.zip.slice(0, 6),
+          group_chats: !!prev?.addResidence?.group_chats ? prev.addResidence.group_chats : [],
+          photo_uri: !!prev?.addResidence?.photo_uri ? prev.addResidence.photo_uri : ""
         },
       }));
-      setStep(Steps.VIEW_GROUP_CHATS);
+      setStep(Steps.ADD_RESIDENCE_PHOTO);
     })(e).catch((error) => {
       console.log(error)
     })
@@ -52,6 +54,7 @@ const AddResidence = ({ useStepper }: Props) => {
       setValue('city', data.addResidence.city);
       setValue('state', data.addResidence.state);
       setValue('zip', data.addResidence.zip);
+      setValue('uri', data.addResidence.uri);
     }
   }, [])
 
@@ -63,7 +66,7 @@ const AddResidence = ({ useStepper }: Props) => {
           <Text textAlign="left" fontSize="sm" color="brand.secondary">(This information will be reviewed)</Text>
         </Box>
         <Box width="100%" justifyContent="center">
-          <Stack maxWidth={["100%", "50%"]} margin="auto">
+          <Stack margin="auto">
             <Controller 
               render={({
                 field,
@@ -141,6 +144,22 @@ const AddResidence = ({ useStepper }: Props) => {
                 rules={{ required: true, maxLength: 6 }}
               />
             </HStack>
+            <Controller 
+                render={({
+                  field,
+                  fieldState: { invalid, isTouched, isDirty, error },
+                  formState,
+                }) => 
+                  <FormControl>
+                    <FormLabel>Website</FormLabel>
+                    <Input {...field} pattern="https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)"
+                    placeholder="Enter link..." type="text" borderWidth="1px" borderColor="brand.tertiaryStroke" bg="brand.tertiaryBG"/>
+                  </FormControl>
+                }
+                name={'uri'}
+                control={control}
+                rules={{ required: true }}
+              /> 
           </Stack>
         </Box>
         <Button type="submit"  width="100%" backgroundColor="brand.primary" _hover={{ backgroundColor: "brand.primaryLight"}}>Continue</Button>

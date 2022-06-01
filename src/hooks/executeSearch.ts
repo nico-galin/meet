@@ -12,10 +12,11 @@ interface Props {
 
 const executeSearch = ({ navigate, options}: Props) => {
   let query = `?`;
-  if (!!options?.searchText) query += `search=${options.searchText}`
+  if (!!options?.id) query = `id=${options.id}`;
+  if (!!options?.searchText) query += `&search=${options.searchText}`;
   navigate({
     pathname: options?.destination,
-    search: !!options?.id ? `id=${options.id}` : query
+    search: query
   })
 }
 

@@ -7,7 +7,7 @@ import useAuth from 'contexts/auth/useAuth';
 import { Controller, useForm } from 'react-hook-form';
 import { supported_companies } from 'constants/supported_companies';
 import useLocalStorage from 'hooks/useLocalStorage';
-import { formatName } from 'hooks/utils';
+import { emailSupported, formatName } from 'hooks/utils';
 import VerifyUser from './components/VerifyUser';
 import { useNavigate } from 'react-router-dom';
 
@@ -71,17 +71,8 @@ const Login = ({ }: Props) => {
     setWaiting(false)
   }
 
-  const companySupported = (email: string) => {
-    for (let company of supported_companies) {
-      for (let domain of company.email_domains) {
-        if (email.toLowerCase().endsWith(domain.toLowerCase())) return true;
-      }
-    }
-    return false;
-  }
-
   const handleValidation = (email: string) => {
-    return isValidEmail(email) && companySupported(email);
+    return isValidEmail(email) && emailSupported(email);
   }
 
   return (
@@ -96,7 +87,7 @@ const Login = ({ }: Props) => {
               <FormControl isInvalid={!!errors.email}>
                 <FormErrorMessage>{!!errors.email ? "Invalid or unsupported email" : ""}</FormErrorMessage>
                 <StackDivider height="5px" />
-                <Input {...register('email', { required: true, validate: handleValidation})} type="email" bgColor="brand.tertiaryBG" placeholder="Enter your email..."/>
+                <Input {...register('email', { required: true, validate: handleValidation})} type="email" bgColor="brand.tertiaryBG" placeholder="Enter your company email..."/>
               </FormControl>
               <StackDivider height="5px" />
               <Button type="submit" width="100%" paddingX="30px" backgroundColor="brand.primary" _hover={{ backgroundColor: "brand.primaryLight"}} fontSize="sm" >Sign in</Button>

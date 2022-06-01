@@ -54,7 +54,7 @@ const ResidenceProfile = ({ useStepper }: Props) => {
           <Text textAlign="left" fontSize="sm" color="brand.secondary">{formatAddress(residence)}</Text>
         </Box>
         <Stack direction={['column', 'row']} spacing="30px" alignItems="start">
-          <Stack flex="1">
+          <Stack flex="1" spacing="20px">
             <Image flex="1" src={residence.photo_uri} fit="cover" borderRadius="15px"/>
             <HStack>
               <DataCard size="sm" label={`${formattedCompanyName} Employees`} data={isAuthenticated ? companyResidents.length : "?"} />

@@ -7,10 +7,12 @@ import ViewGroupChats from './steps/ViewGroupChats'
 import ConfirmResidenceDetails from './steps/ConfirmResidenceDetails'
 import ConfirmDeleteResidence from './steps/ConfirmDeleteResidence'
 import ConfirmJoinResidence from './steps/ConfirmJoinResidence'
+import AddResidencePhoto from './steps/AddResidencePhoto'
 
 export enum Steps {
   RESIDENCE_PROFILE,
   ADD_RESIDENCE,
+  ADD_RESIDENCE_PHOTO,
   ADD_GROUP_CHAT,
   VIEW_GROUP_CHATS,
   CONFIRM_ADD_HOUSING,
@@ -34,9 +36,11 @@ const HousingStepper = ({ isOpen, startPage, onExit, data}: Props) => {
       onExit={onExit}
       isOpen={isOpen}
       startPage={startPage}
+      size={!!data?.residence ? "xl" : "sm"}
       steps={{
         RESIDENCE_PROFILE: <ResidenceProfile useStepper={useStepper} />,
         ADD_RESIDENCE: <AddResidence useStepper={useStepper} />,
+        ADD_RESIDENCE_PHOTO: <AddResidencePhoto useStepper={useStepper} />,
         ADD_GROUP_CHAT: <AddGroupChat useStepper={useStepper} />,
         VIEW_GROUP_CHATS: <ViewGroupChats useStepper={useStepper} />,
         CONFIRM_ADD_HOUSING: <ConfirmResidenceDetails useStepper={useStepper} />,

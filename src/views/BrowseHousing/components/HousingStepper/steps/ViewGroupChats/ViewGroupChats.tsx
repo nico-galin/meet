@@ -32,7 +32,7 @@ const ViewGroupChats = ({ useStepper }: Props) => {
         <Text textAlign="left" fontSize="sm" color="brand.secondary">(Try to limit the total number of chats)</Text>
       </Box>
       <Box width="100%" justifyContent="center">
-        <Stack width="50%" margin="auto" spacing="20px">
+        <Stack margin="auto" spacing="20px">
           {data?.addResidence?.group_chats?.map((gc: GroupChat, ind: number) => (
             <GroupChatCard key={ind} groupChat={gc} onDelete={() => handleDelete(ind)}/>
           ))}
@@ -41,7 +41,7 @@ const ViewGroupChats = ({ useStepper }: Props) => {
         </Stack>
       </Box>
       <HStack width="100%">
-        <Button onClick={() => !!data.addResidence ? setStep(Steps.ADD_RESIDENCE) : setStep(Steps.RESIDENCE_PROFILE)}>Back</Button>
+        <Button onClick={() => !!data.addResidence ? setStep(Steps.ADD_RESIDENCE_PHOTO) : setStep(Steps.RESIDENCE_PROFILE)}>Back</Button>
         <Button onClick={() => setStep(Steps.CONFIRM_ADD_HOUSING)} flex="1" width="100%" backgroundColor="brand.primary" _hover={{ backgroundColor: "brand.primaryLight"}}>Continue</Button>
       </HStack>
     </Stack>

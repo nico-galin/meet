@@ -8,6 +8,7 @@ import AuthContext from './AuthContext'
 import User, { PublicUser } from 'models/User'
 import { useNavigate } from 'react-router-dom';
 import { supported_companies } from 'constants/supported_companies';
+import { getCompanyFromEmail } from 'hooks/utils';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -20,7 +21,8 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig)
 
-const verifyUrl = process.env.REACT_APP_ENVIRONMENT === "local" ? "http://localhost:3000/#/verify" : "https://meet.nicogalin.com/#/verify";
+let verifyUrl =  "https://meet.nicogalin.com/#/verify";
+if (false) verifyUrl = "http://localhost:3000/#/verify";
 
 const AuthProvider = (props: any) => {
   const navigate = useNavigate();
@@ -32,7 +34,6 @@ const AuthProvider = (props: any) => {
 
   const signIn = async (email: string) => {
     try {
-      console.log()
       const actionCodeSettings = {
         url: verifyUrl,
         handleCodeInApp: true,
@@ -51,6 +52,7 @@ const AuthProvider = (props: any) => {
         id: res.user.uid,
         createdAt: !!res.user.metadata.creationTime ? res.user.metadata.creationTime : "",
         email: !!res.user.email ? res.user.email : "",
+        company_name: getCompanyFromEmail(email)
       })
       setisAuthenticated(true);
     }
@@ -75,15 +77,8 @@ const AuthProvider = (props: any) => {
     const unsubscribe = auth.onAuthStateChanged((fbUser) => {
       if (!fbUser) return;
       const email = !!fbUser.email ? fbUser.email : "";
-      let userCompany = "";
-      for (let company of supported_companies) {
-        for (let domain of company.email_domains) {
-          if (email.toLowerCase().endsWith(domain.toLowerCase())) {
-            userCompany = company.name;
-            break;
-          }
-        }
-      }
+      let userCompany = getCompanyFromEmail(email);
+
       setUser({
         id: fbUser.uid,
         createdAt: !!fbUser.metadata.creationTime ? fbUser.metadata.creationTime : "",

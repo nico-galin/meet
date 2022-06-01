@@ -55,7 +55,7 @@ const BrowseHousing = ({ }: Props) => {
   }
 
   const onClick = (id: string) => {
-    executeSearch({ navigate, options: { id }});
+    executeSearch({ navigate, options: { id, searchText, filters: selectedFilters }});
   }
 
   const onReset = () => {
@@ -64,7 +64,7 @@ const BrowseHousing = ({ }: Props) => {
   }
 
   const handleExit = () => {
-    executeSearch({ navigate });
+    executeSearch({ navigate, options: { searchText, filters: selectedFilters} });
     if (addingResidence) {
       setAddingResidence(false)
     }
@@ -130,12 +130,12 @@ const BrowseHousing = ({ }: Props) => {
         <ProductHeader company={user?.company_name} product='Housing' size='sm'/>
         { searchBar }
       </VStack>
-      <Stack padding="25px 15px" flex="1">
-      <Box width="100%" display={["block", "none"]}>
-        { searchBar }
-        <StackDivider height="20px" />
-      </Box>
-        {res.map((r, ind) => (
+      <Stack padding="25px 15px" paddingBottom="300px" flex="1" spacing="15px" height="100%" overflowY="scroll">
+        <Box width="100%" display={["block", "none"]}>
+          { searchBar }
+          <StackDivider height="20px" />
+        </Box>
+        {res.sort((a, b) => a.name.localeCompare(b.name)).map((r, ind) => (
           <Box key={ind}>
             <ResidenceCard residence={r} onClick={() => onClick(r.id)} />
           </Box>
@@ -148,6 +148,7 @@ const BrowseHousing = ({ }: Props) => {
           <Text fontSize={["xs", "md"]}>Can't find what you're looking for? <Button variant="link" fontSize={["xs", "md"]} onClick={handleAdd}>Add a new Residence</Button></Text>
         }
       </Stack>
+      <StackDivider height="50px"/>
       <HousingStepper
         isOpen={(!!selResidence && !!residences && !!residences[selResidence]) || addingResidence === true}
         startPage={addingResidence ? Steps.ADD_RESIDENCE : Steps.RESIDENCE_PROFILE}

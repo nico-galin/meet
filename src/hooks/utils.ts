@@ -1,3 +1,4 @@
+import { supported_companies } from "constants/supported_companies";
 import GroupChat from "models/GroupChat";
 import Residence from "models/Residence";
 
@@ -37,4 +38,24 @@ const hashGroupChat = async (gc: GroupChat) => {
   return sha256(str);
 }
 
-export { formatName, formatAddress, hashResidence, hashGroupChat, getFutureDate }
+
+const emailSupported = (email: string) => {
+  for (let company of supported_companies) {
+    for (let domain of company.email_domains) {
+      if (email.toLowerCase().endsWith(domain.toLowerCase())) return true;
+    }
+  }
+  return false;
+}
+
+const getCompanyFromEmail = (email: string) => {
+  for (let company of supported_companies) {
+    for (let domain of company.email_domains) {
+      if (email.toLowerCase().endsWith(domain.toLowerCase())) {
+        return company.name;
+      }
+    }
+  }
+}
+
+export { formatName, formatAddress, hashResidence, hashGroupChat, getFutureDate, emailSupported, getCompanyFromEmail }

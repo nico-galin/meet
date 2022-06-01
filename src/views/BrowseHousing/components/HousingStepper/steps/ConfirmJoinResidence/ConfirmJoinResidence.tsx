@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, FormLabel, Input, Stack, Text } from '@chakra-ui/react'
+import { Box, Button, FormControl, FormLabel, HStack, Input, Stack, Text } from '@chakra-ui/react'
 import { Controller, useForm } from 'react-hook-form';
 import useDatabase from 'contexts/database/useDatabase';
 import { Steps } from '../../HousingStepper';
@@ -8,7 +8,7 @@ interface Props {
 }
 
 const ConfirmJoinResidence = ({ useStepper }: Props) => {
-  const { data, setStep } = useStepper();
+  const { data, setStep, onExit } = useStepper();
   const residence = data.residence;
   const { joinResidence } = useDatabase();
   const formMethods = useForm();
@@ -37,7 +37,7 @@ const ConfirmJoinResidence = ({ useStepper }: Props) => {
           <Text textAlign="left" fontSize="sm" color="brand.secondary">(These changes will be reflected across the app)</Text>
         </Box>
         <Box width="100%" justifyContent="center">
-          <Stack maxWidth={["100%", "50%"]} margin="auto">
+          <Stack margin="auto">
             <Controller 
               render={({
                 field,
@@ -56,7 +56,10 @@ const ConfirmJoinResidence = ({ useStepper }: Props) => {
             />
           </Stack>
         </Box>
-        <Button type="submit" width="100%" backgroundColor="brand.primary" _hover={{ backgroundColor: "brand.primaryLight"}}>Join Residence</Button>
+        <HStack width="100%">
+          <Button onClick={onExit}>Cancel</Button>
+        <Button type="submit" flex="1" backgroundColor="brand.primary" _hover={{ backgroundColor: "brand.primaryLight"}}>Join Residence</Button>
+        </HStack>
       </Stack>
     </form>
   )

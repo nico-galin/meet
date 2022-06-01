@@ -14,7 +14,7 @@ const Home = ({ }: Props) => {
       <Stack spacing="40px">
         <Box>
           <Text fontWeight="bold" fontSize="3xl" textAlign="center">Welcome to Meet</Text>
-          <Text color="brand.secondary" textAlign="center">by Nico Galin</Text>
+          <Text color="brand.secondary" textAlign="center">Find your people</Text>
         </Box>
         <HStack>
           <Button onClick={() => navigate("/meetups")}>Find Meetups</Button>

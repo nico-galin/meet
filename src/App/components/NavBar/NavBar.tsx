@@ -49,7 +49,7 @@ const NavBar = (props: Props) => {
             </Button>
             {open &&
               <Stack onMouseLeave={() => setOpen(false)} zIndex={999} backgroundColor={"brand.primary"} minW="100%" borderBottomRadius="8px" position="absolute" top="calc(2px + 100%)" right="0" spacing={0}>
-                <Button fontSize="sm" width="100%" justifyContent="end" paddingLeft="20px" bg="none" borderRadius={0}>{formatName(user?.company_name)}</Button>
+                {!!user?.company_name && <Button fontSize="sm" width="100%" justifyContent="end" paddingLeft="20px" bg="none" borderRadius={0}>{formatName(user?.company_name)}</Button>}
                 <Button fontSize="sm" width="100%" justifyContent="end" paddingLeft="20px" bg="none" borderRadius={0}>Settings</Button>
                 <Button onClick={isAuthenticated ? signOut : () => navigate("/login")} fontSize="sm" width="100%" justifyContent="end" paddingLeft="20px" bg="none" borderRadius={0}>{isAuthenticated? "Sign Out" : "Sign In"}</Button>
               </Stack>

@@ -23,9 +23,10 @@ const Verify = ({ }: Props) => {
       localEmail = localEmail?.slice(1, localEmail.length - 1)
       if (isSignInWithEmailLink(auth, window.location.href)) {
         let email = localEmail?.toString();
-        if (!email) {
+        if (!!!email) {
           const res = window.prompt('Please provide your email for confirmation');
           email = !!res ? res : "";
+          console.log(email)
         } 
         verifyEmail(email, window.location.href).then(() => {
           window.localStorage.setItem("emailForLogin", "");
@@ -40,7 +41,9 @@ const Verify = ({ }: Props) => {
         navigate("/login")
       }
     }
-    init()
+    setTimeout(function () {
+      init();
+    }, 1000);
   }, [])
   return (
     <VStack marginTop="30vh"  alignItems="center">
