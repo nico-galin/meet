@@ -20,6 +20,8 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig)
 
+const verifyUrl = process.env.REACT_APP_ENVIRONMENT === "local" ? "http://localhost:3000/#/verify" : "https://meet.nicogalin.com/#/verify";
+
 const AuthProvider = (props: any) => {
   const navigate = useNavigate();
   const auth = getAuth(app);
@@ -30,8 +32,9 @@ const AuthProvider = (props: any) => {
 
   const signIn = async (email: string) => {
     try {
+      console.log()
       const actionCodeSettings = {
-        url: process.env.REACT_APP_ENVIRONMENT === "local" ? "http://localhost:3000/#/verify" : "https://meet.nicogalin.com/#/verify",
+        url: verifyUrl,
         handleCodeInApp: true,
       }
       await sendSignInLinkToEmail(auth, email, actionCodeSettings).then(() => {
