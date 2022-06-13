@@ -5,7 +5,7 @@ import GroupChatCard from 'components/GroupChatCard';
 import GroupChat from 'models/GroupChat';
 import useAuth from 'contexts/auth/useAuth';
 import { format } from 'util';
-import { Steps } from '../../HousingStepper';
+import { Steps } from '../../CommunityStepper';
 import { formatAddress, formatName } from 'hooks/utils';
 import useDatabase from 'contexts/database/useDatabase';
 import { Member } from 'models/Residence';

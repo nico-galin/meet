@@ -11,7 +11,7 @@ export interface ResidenceRating {
   flags: string[] //list of user uuid's
 }
 
-export interface Resident {
+export interface Member {
   expiration?: string
   company_name: string
   userId: string
@@ -28,8 +28,8 @@ export interface Residence {
   uri: string
   rating?: number
   rating_list: ResidenceRating[]
-  current_residents: Resident[]
-  past_residents: Resident[]
+  current_residents: Member[]
+  past_residents: Member[]
   group_chats: GroupChat[]
   pending_review: boolean
   creatorId: string

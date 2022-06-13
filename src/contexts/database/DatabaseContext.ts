@@ -1,3 +1,4 @@
+import Community from 'models/Community';
 import GroupChat from 'models/GroupChat';
 import { Meetup } from 'models/Meetup';
 import Residence from 'models/Residence';
@@ -9,8 +10,9 @@ export interface ResidenceUpdateProps {
 }
 
 export interface DatabaseContextValues {
-  residences: {[key: string]: any},
-  meetups: Meetup[]
+  residences: {[key: string]: Residence}
+  meetups: {[key: string]: Meetup}
+  communities: {[key: string]: Community}
   loading: boolean
   refreshResidences: () => void
   refreshMeetups: () => void
@@ -25,7 +27,8 @@ export interface DatabaseContextValues {
 
 const DatabaseContext = createContext<DatabaseContextValues>({
   residences: {},
-  meetups: [],
+  meetups: {},
+  communities: {},
   loading: false,
   refreshResidences: () => {},
   refreshMeetups: () => {},

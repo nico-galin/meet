@@ -1,31 +1,34 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import {
-  Box, Button, Flex, HStack, Image, Input, Spinner, Stack, StackDivider, Text, VStack,
+  Box, Button, Flex, Heading, HStack, Image, Input, Spinner, Stack, StackDivider, Text, VStack, Wrap, WrapItem,
 } from '@chakra-ui/react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import ProductHeader from 'components/ProductHeader';
 import Residence from 'models/Residence';
 import { useMemo } from 'react';
-import ResidenceCard from './components/ResidenceCard';
+import ResidenceCard from './components/CommunityCard';
 import executeSearch from 'hooks/executeSearch';
 import { selectedFilter } from 'components/SearchBar/SearchBar';
 import SearchIcon from "assets/svg/search.svg";
-import HousingStepper from './components/HousingStepper';
+import CommunityStepper from './components/CommunityStepper';
 import GroupChat from 'models/GroupChat';
 import useAuth from 'contexts/auth/useAuth';
-import { Steps } from './components/HousingStepper/HousingStepper';
+import { Steps } from './components/CommunityStepper/CommunityStepper';
 import useDatabase from 'contexts/database/useDatabase';
+import Community from 'models/Community';
+import CommunityCard from './components/CommunityCard';
+import { formatName } from 'hooks/utils';
 
 interface Props {}
 
-const BrowseHousing = ({ }: Props) => {
+const BrowseCommunities = ({ }: Props) => {
   const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const { search } = useLocation();
-  const { residences, loading } = useDatabase();
+  const { communities, loading } = useDatabase();
   const [searchText, setSearchText] = useState("");
-  const [selResidence, setSelResidence] = useState("")
-  const [addingResidence, setAddingResidence] = useState(false);
+  const [selCommunity, setSelCommunity] = useState("")
+  const [addingCommunity, setAddingCommunity] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState<selectedFilter[]>([]);
   const ref = useRef() as React.MutableRefObject<HTMLInputElement>;
   const query = new URLSearchParams(search);
@@ -35,18 +38,18 @@ const BrowseHousing = ({ }: Props) => {
     setSearchText(!!s ? s : "");
     const rId = query.get("id");
     if (!!rId) {
-      setSelResidence(rId)
+      setSelCommunity(rId)
     } else {
-      setSelResidence("")
+      setSelCommunity("")
     }
   }, [])
 
   useEffect(() => {
     const rId = query.get("id");
     if (!!rId) {
-      setSelResidence(rId)
+      setSelCommunity(rId)
     } else {
-      setSelResidence("")
+      setSelCommunity("")
     }
   }, [search])
 
@@ -65,31 +68,36 @@ const BrowseHousing = ({ }: Props) => {
 
   const handleExit = () => {
     executeSearch({ navigate, options: { searchText, filters: selectedFilters} });
-    if (addingResidence) {
-      setAddingResidence(false)
+    if (addingCommunity) {
+      setAddingCommunity(false)
     }
-    setSelResidence("")
+    setSelCommunity("")
   }
 
   const handleAdd = () => {
     if (isAuthenticated) {
-      setAddingResidence(true)
+      setAddingCommunity(true)
     } else {
       navigate("/login")
     }
   }
 
-  const res = useMemo(() => {
+  const parsed_communities = useMemo(() => {
     const query = new URLSearchParams(search);
-    let selected = Object.values(residences);
+    let selected = Object.values(communities);
     const sQuery = query.get("search")?.toLowerCase();
     if (!!sQuery) {
       selected = selected.filter(r => {
-        return JSON.stringify([r.name, r.address]).toLowerCase().includes(sQuery);
+        return JSON.stringify([r.name, r.emoji, r.region, r.companies]).toLowerCase().includes(sQuery);
       })
     }
-    return selected as Residence[];
-  }, [search, residences])
+    selected =  selected.sort((a, b) => a.name.localeCompare(b.name)) as Community[];
+    const comp_coms = selected.filter(c => !!user?.company_name && c.companies.includes(user.company_name))
+    return {
+      company: comp_coms,
+      all: selected
+    }
+  }, [search, communities])
 
   const searchBar = (
     <HStack marginTop="5px" width="100%">
@@ -117,7 +125,7 @@ const BrowseHousing = ({ }: Props) => {
   )
 
   return (
-    <HStack height="100%" alignItems="start">
+    <HStack position="relative" height="100%" width="100%" alignItems="start" overflow="hidden">
       <VStack
         display={["none", "block"]}
         divider={<StackDivider height="1px" backgroundColor="theme.secondaryStroke" />}
@@ -130,7 +138,7 @@ const BrowseHousing = ({ }: Props) => {
         <ProductHeader company={user?.company_name} product='Housing' size='sm'/>
         { searchBar }
       </VStack>
-      <Stack  padding="25px 15px" paddingBottom="300px" flex="1" spacing="15px" height="100%" overflowY="scroll" sx={{
+      <Wrap padding="25px 15px" paddingBottom="300px" flex="1" spacing="15px" height="100%" overflowY="scroll" sx={{
           '&::-webkit-scrollbar': {
             width: '16px',
             borderRadius: '8px',
@@ -139,33 +147,48 @@ const BrowseHousing = ({ }: Props) => {
           '&::-webkit-scrollbar-thumb': {
             backgroundColor: `none`,
           },
-        }}>
+        }}
+      >
         <Box width="100%" display={["block", "none"]}>
           { searchBar }
           <StackDivider height="20px" />
         </Box>
-        {res.sort((a, b) => a.name.localeCompare(b.name)).map((r, ind) => (
-          <Box key={ind}>
-            <ResidenceCard residence={r} onClick={() => onClick(r.id)} />
-          </Box>
+        { isAuthenticated && !!user?.company_name && parsed_communities.company.length > 0 &&
+          <>
+            <Heading fontSize="lg" width="100%">{formatName(user.company_name)} Communities</Heading>
+            {parsed_communities.company.map((c, ind) => (
+              <WrapItem key={ind}>
+                <CommunityCard community={c} onClick={() => onClick(c.id)} restricted={true}/>
+              </WrapItem>
+            ))}
+            <StackDivider width="100%" height="10px" />
+          </>
+        }
+        <Heading fontSize="lg" width="100%">All Communities</Heading>
+        {parsed_communities.all.map((c, ind) => (
+          <WrapItem key={ind}>
+            <CommunityCard community={c} onClick={() => onClick(c.id)} restricted={false}/>
+          </WrapItem>
         ))}
         {loading ?
           <Flex width="100%" alignItems="center" padding="30px">
             <Spinner margin="auto" size="md" />
           </Flex>
         :
-          <Text fontSize={["xs", "md"]}>Can't find what you're looking for? <Button variant="link" fontSize={["xs", "md"]} onClick={handleAdd}>Add a new Residence</Button></Text>
+          <>
+            <StackDivider width="100%" height="5px" />
+            <Text fontSize={["xs", "md"]}>Can't find what you're looking for? <Button variant="link" fontSize={["xs", "md"]} onClick={handleAdd}>Add a new Community</Button></Text>
+          </>
         }
-      </Stack>
-      <StackDivider height="50px"/>
-      <HousingStepper
-        isOpen={(!!selResidence && !!residences && !!residences[selResidence]) || addingResidence === true}
-        startPage={addingResidence ? Steps.ADD_RESIDENCE : Steps.RESIDENCE_PROFILE}
+      </Wrap>
+      <CommunityStepper
+        isOpen={(!!selCommunity && !!communities && !!communities[selCommunity]) || addingCommunity === true}
+        startPage={addingCommunity ? Steps.ADD_COMMUNITY : Steps.COMMUNITY_PROFILE}
         onExit={handleExit}
-        data={!!selResidence ? {residence: residences[selResidence]} : null}
+        data={!!selCommunity ? {community: communities[selCommunity]} : null}
       />
     </HStack>
   )
 };
 
-export default BrowseHousing;
+export default BrowseCommunities;

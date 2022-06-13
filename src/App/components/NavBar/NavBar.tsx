@@ -41,7 +41,7 @@ const NavBar = (props: Props) => {
         <HStack spacing="30px">
           <Link as={rLink} _hover={{textDecoration: "none"}} to="/housing"><Text fontSize="sm">Housing</Text></Link>
           <Link as={rLink} _hover={{textDecoration: "none"}} to="/meetups"><Text fontSize="sm">Meetups</Text></Link>
-          <Link as={rLink} _hover={{textDecoration: "none"}} to="/people"><Text fontSize="sm">People</Text></Link>
+          <Link as={rLink} _hover={{textDecoration: "none"}} to="/communities"><Text fontSize="sm">Communities</Text></Link>
           <Link as={rLink} _hover={{textDecoration: "none"}} to="/support"><Text fontSize="sm">Support</Text></Link>
           <HStack position="relative" spacing="2px">
             <Button  onClick={onAccount} backgroundColor="brand.primary" height="35px" paddingX="30px" fontSize="sm" _hover={{bg: "brand.primaryLight"}} borderRightRadius={0} borderBottomLeftRadius={open ? 0 : 8}>Account</Button>

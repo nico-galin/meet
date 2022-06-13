@@ -7,7 +7,6 @@ import Providers from "./Providers"
 import NavBar from "./components/NavBar";
 import Home from "../views/Home";
 import SearchMeetups from "../views/SearchMeetups";
-import People from "../views/People";
 import Profile from "../views/Profile";
 import Settings from "../views/Settings";
 import NicoLogo from "assets/png/watermark_white.png"
@@ -18,6 +17,7 @@ import SearchHousing from "views/SearchHousing";
 import Verify from "views/Verify";
 import useAuth from "contexts/auth/useAuth";
 import Support from "views/Support";
+import BrowseCommunities from "views/BrowseCommunities";
 
 const App = () => (
   <Providers>
@@ -36,9 +36,9 @@ const App = () => (
         }}
       >
         <Navigation />
-        <Link position="absolute" bottom={8} right={8} isExternal href="https://nicogalin.com">
+        {/*<Link position="absolute" bottom={8} right={8} isExternal href="https://nicogalin.com">
           <Image src={NicoLogo} width={["100px", "140px"]} />
-        </Link>
+        </Link>*/}
       </Box>
     </Box>
   </Providers>
@@ -58,7 +58,8 @@ const Navigation = () => {
     <Routes>
       <Route path="/home" element={<Home />} />
 
-      <Route path="/people" element={<People />} />
+      <Route path="/communities" element={<BrowseCommunities />} />
+      <Route path="/communities/browse" element={<BrowseCommunities />} />
 
       <Route path="/meetups" element={<SearchMeetups />} />
       <Route path="/meetups/search" element={<SearchMeetups />} />

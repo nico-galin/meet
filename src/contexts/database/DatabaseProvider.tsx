@@ -1,23 +1,26 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import useLocalStorage from 'hooks/useLocalStorage'
 import DatabaseContext, { ResidenceUpdateProps } from './DatabaseContext'
-import Residence, { Resident } from 'models/Residence';
+import Residence, { Member } from 'models/Residence';
 import { Meetup } from 'models/Meetup';
 
 import { getFirestore, doc, setDoc, addDoc, collection, getDocs, deleteDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore"; 
 import { getFutureDate, hashGroupChat, hashResidence } from 'hooks/utils';
 import useAuth from 'contexts/auth/useAuth';
 import GroupChat from 'models/GroupChat';
+import Community from 'models/Community';
 
 const db = getFirestore();
 
 const DatabaseProvider = (props: any) => {
   const [loading, setLoading] = useState(true);
-  const [residences, setResidences] = useState({});
-  const [meetups, setMeetups] = useState<Meetup[]>([]);
+  const [residences, setResidences] = useState<{[key: string]: Residence}>({});
+  const [meetups, setMeetups] = useState<{[key: string]: Meetup}>({});
+  const [communities, setCommunities] = useState<{[key: string]: Community}>({});
   const { user, isAuthenticated } = useAuth();
 
-  const residenceDoc = `residences`
+  const residenceDoc = `residences`;
+  const communityDoc = `communities`;
 
   const addResidence = async (residence: Residence) => {
     if (!isAuthenticated || !user) {
@@ -108,7 +111,6 @@ const DatabaseProvider = (props: any) => {
 
   const refreshResidences = async () => {
     const querySnapshot = await getDocs(collection(db, residenceDoc));
-    setResidences(querySnapshot.docs.map(e => e.data() as Residence));
     const newRes: {[key: string]: any} = {};
     querySnapshot.forEach(doc => {
       const r = doc.data();
@@ -118,7 +120,90 @@ const DatabaseProvider = (props: any) => {
   }
 
   const refreshMeetups = async () => {
-    setMeetups([]);
+    setMeetups({});
+  }
+
+  const refreshCommunities = async () => {
+    setCommunities({
+      "2121e21": {
+        id: "2121e21",
+        name: "Tennis",
+        emoji: "🎾",
+        region: "Santa Clara Valley",
+        companies: [],
+        members: [],
+        past_members: [],
+        group_chats: [],
+        pending_review: false,
+        creatorId: "8fialn3nhKOeBO8OjYxgHXOixPi1",
+        creation_timestamp: "0"
+      },
+      "2121asdas": {
+        id: "2121asdas",
+        name: "Tennis",
+        emoji: "🎾",
+        region: "Santa Clara Valley",
+        companies: [],
+        members: [],
+        past_members: [],
+        group_chats: [],
+        pending_review: false,
+        creatorId: "8fialn3nhKOeBO8OjYxgHXOixPi1",
+        creation_timestamp: "0"
+      },
+      "asdasd3d2t2asdas": {
+        id: "asdasd3d2t2asdas",
+        name: "Tennis",
+        emoji: "🎾",
+        region: "Santa Clara Valley",
+        companies: [],
+        members: [],
+        past_members: [],
+        group_chats: [],
+        pending_review: false,
+        creatorId: "8fialn3nhKOeBO8OjYxgHXOixPi1",
+        creation_timestamp: "0"
+      },
+      "asdasda33ada": {
+        id: "asdasda33ada",
+        name: "Tennis",
+        emoji: "🎾",
+        region: "Santa Clara Valley",
+        companies: [],
+        members: [],
+        past_members: [],
+        group_chats: [],
+        pending_review: false,
+        creatorId: "8fialn3nhKOeBO8OjYxgHXOixPi1",
+        creation_timestamp: "0"
+      },
+      "231321aw12dad": {
+        id: "231321aw12dad",
+        name: "Tennis",
+        emoji: "🎾",
+        region: "Santa Clara Valley",
+        companies: ["apple", "facebook"],
+        members: [],
+        past_members: [],
+        group_chats: [],
+        pending_review: false,
+        creatorId: "8fialn3nhKOeBO8OjYxgHXOixPi1",
+        creation_timestamp: "0"
+      },
+      "asdasd3d322d3d2": {
+        id: "asdasd3d322d3d2",
+        name: "Tennis",
+        emoji: "🎾",
+        region: "Santa Clara Valley",
+        companies: [],
+        members: [],
+        past_members: [],
+        group_chats: [],
+        pending_review: false,
+        creatorId: "8fialn3nhKOeBO8OjYxgHXOixPi1",
+        creation_timestamp: "0"
+      },
+  });
   }
 
   const joinResidence = async (residence: Residence, duration: number) => {
@@ -131,7 +216,7 @@ const DatabaseProvider = (props: any) => {
         userId: user?.id,
         company_name: user?.company_name,
         expiration: getFutureDate(duration).toISOString()
-      } as Resident
+      } as Member
       const response0 = await updateDoc(doc(db, residenceDoc, residence.id), {
         current_residents: arrayUnion(person)
       });
@@ -155,7 +240,7 @@ const DatabaseProvider = (props: any) => {
         userId: user?.id,
         company_name: user?.company_name,
         expiration: residence.current_residents.find(r => r.userId === user?.id)?.expiration
-      } as Resident
+      } as Member
       const response0 = await updateDoc(doc(db, residenceDoc, residence.id), {
         current_residents: arrayRemove(person)
       });
@@ -172,7 +257,7 @@ const DatabaseProvider = (props: any) => {
   useEffect(() => {
     const init = async () => {
       setLoading(true);
-      await refreshResidences();
+      await Promise.all([refreshResidences(), refreshCommunities()]);
       setLoading(false);
     }
     init();
@@ -183,6 +268,7 @@ const DatabaseProvider = (props: any) => {
       value={{
         loading,
         residences,
+        communities,
         meetups,
         refreshResidences,
         refreshMeetups,
