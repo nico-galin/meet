@@ -20,6 +20,16 @@ const CustomModal = ({ onClose, size = "3xl", children }: Props) => (
         backgroundColor="brand.secondaryBG"
         padding="20px"
         borderRadius="16px"
+        sx={{
+          '&::-webkit-scrollbar': {
+            width: '16px',
+            borderRadius: '8px',
+            backgroundColor: `rgba(0, 0, 0, 0.1)`,
+          },
+          '&::-webkit-scrollbar-thumb': {
+            backgroundColor: `rgba(0, 0, 0, 0.1)`,
+          },
+        }}
       >
         <Stack textAlign="left">{children}</Stack>
       </ModalBody>

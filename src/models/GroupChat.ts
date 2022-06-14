@@ -1,7 +1,8 @@
 export interface GroupChat {
   id: string
-  residenceId: string,
-  creatorId: string,
+  residenceId?: string
+  communityId?: string
+  creatorId: string
   company?: string
   name?: string
   restricted: boolean

@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import useLocalStorage from 'hooks/useLocalStorage'
-import DatabaseContext, { ResidenceUpdateProps } from './DatabaseContext'
+import DatabaseContext, { UpdateProps } from './DatabaseContext'
 import Residence, { Member } from 'models/Residence';
 import { Meetup } from 'models/Meetup';
 
 import { getFirestore, doc, setDoc, addDoc, collection, getDocs, deleteDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore"; 
-import { getFutureDate, hashGroupChat, hashResidence } from 'hooks/utils';
+import { getFutureDate, hashGroupChat, hashResidence, hashCommunity } from 'hooks/utils';
 import useAuth from 'contexts/auth/useAuth';
 import GroupChat from 'models/GroupChat';
 import Community from 'models/Community';
@@ -57,7 +57,17 @@ const DatabaseProvider = (props: any) => {
       console.log(gc)
       gc.id = await hashGroupChat(gc);
       gc.expiration = getFutureDate(6).toISOString()
-      const res = await updateDoc(doc(db, residenceDoc, gc.residenceId), {
+      let curDoc;
+      if (!!gc.residenceId) {
+        curDoc = doc(db, residenceDoc, gc.residenceId)
+      } else if(!!gc.communityId) {
+        curDoc = doc(db, communityDoc, gc.communityId)
+      }
+      if (!curDoc) {
+        console.error("Invalid groupchat object");
+        return;
+      }
+      const res = await updateDoc(curDoc, {
         group_chats: arrayUnion(gc)
       });
       refreshResidences();
@@ -73,7 +83,17 @@ const DatabaseProvider = (props: any) => {
       return;
     }
     try {
-      const res = await updateDoc(doc(db, residenceDoc, gc.residenceId), {
+      let curDoc;
+      if (!!gc.residenceId) {
+        curDoc = doc(db, residenceDoc, gc.residenceId)
+      } else if(!!gc.communityId) {
+        curDoc = doc(db, communityDoc, gc.communityId)
+      }
+      if (!curDoc) {
+        console.error("Invalid groupchat object");
+        return;
+      }
+      const res = await updateDoc(curDoc, {
         regions: arrayRemove(gc)
       });
       refreshResidences();
@@ -97,7 +117,7 @@ const DatabaseProvider = (props: any) => {
     }
   }
 
-  const updateResidence = async ({ id, options }: ResidenceUpdateProps) => {
+  const updateResidence = async ({ id, options }: UpdateProps) => {
     if (!isAuthenticated) {
       console.log("[NOT AUTHENTICATED]")
       return;
@@ -123,14 +143,40 @@ const DatabaseProvider = (props: any) => {
     setMeetups({});
   }
 
+  const addCommunity = async (community: Community) => {
+    if (!isAuthenticated || !user) {
+      console.log("[NOT AUTHENTICATED]")
+      return;
+    }
+    try {
+      const id: string = await hashCommunity(community);
+      community.group_chats = community.group_chats.map(gc => ({ ...gc, residenceId: id}))
+      const uploadGCIDs = await Promise.all(community.group_chats.map(gc => hashGroupChat(gc)))
+      community.group_chats = community.group_chats.map((gc, ind) => ({ ...gc, id: uploadGCIDs[ind], expiration: getFutureDate(6).toISOString()}))
+
+      const resp = await setDoc(doc(db, communityDoc, id), {
+        ...community,
+        id,
+        current_residents: [],
+        past_residents: [],
+        pending_review: true,
+        creatorId: user?.id,
+      });
+      refreshResidences();
+      return resp;
+    } catch (e) {
+      console.log(e, community);
+    }
+  }
+
   const refreshCommunities = async () => {
     setCommunities({
       "2121e21": {
         id: "2121e21",
         name: "Tennis",
+        description: "Tennis squad",
         emoji: "🎾",
         region: "Santa Clara Valley",
-        companies: [],
         members: [],
         past_members: [],
         group_chats: [],
@@ -141,9 +187,9 @@ const DatabaseProvider = (props: any) => {
       "2121asdas": {
         id: "2121asdas",
         name: "Tennis",
+        description: "Tennis squad",
         emoji: "🎾",
         region: "Santa Clara Valley",
-        companies: [],
         members: [],
         past_members: [],
         group_chats: [],
@@ -154,9 +200,9 @@ const DatabaseProvider = (props: any) => {
       "asdasd3d2t2asdas": {
         id: "asdasd3d2t2asdas",
         name: "Tennis",
+        description: "Tennis squad",
         emoji: "🎾",
         region: "Santa Clara Valley",
-        companies: [],
         members: [],
         past_members: [],
         group_chats: [],
@@ -167,9 +213,9 @@ const DatabaseProvider = (props: any) => {
       "asdasda33ada": {
         id: "asdasda33ada",
         name: "Tennis",
+        description: "Tennis squad",
         emoji: "🎾",
         region: "Santa Clara Valley",
-        companies: [],
         members: [],
         past_members: [],
         group_chats: [],
@@ -180,9 +226,9 @@ const DatabaseProvider = (props: any) => {
       "231321aw12dad": {
         id: "231321aw12dad",
         name: "Tennis",
+        description: "Tennis squad",
         emoji: "🎾",
         region: "Santa Clara Valley",
-        companies: ["apple", "facebook"],
         members: [],
         past_members: [],
         group_chats: [],
@@ -193,9 +239,9 @@ const DatabaseProvider = (props: any) => {
       "asdasd3d322d3d2": {
         id: "asdasd3d322d3d2",
         name: "Tennis",
+        description: "Tennis squad",
         emoji: "🎾",
         region: "Santa Clara Valley",
-        companies: [],
         members: [],
         past_members: [],
         group_chats: [],
@@ -204,6 +250,80 @@ const DatabaseProvider = (props: any) => {
         creation_timestamp: "0"
       },
   });
+  }
+
+  const deleteCommunity = async (community: Community) => {
+    if (!isAuthenticated) {
+      console.log("[NOT AUTHENTICATED]")
+      return;
+    }
+    try {
+      const res = await deleteDoc(doc(db, communityDoc, community.id));
+      refreshCommunities();
+      return res;
+    } catch (e) {
+      console.log(e, community);
+    }
+  }
+
+  const updateCommunity = async ({ id, options }: UpdateProps) => {
+    if (!isAuthenticated) {
+      console.log("[NOT AUTHENTICATED]")
+      return;
+    }
+    try {
+
+    } catch (e) {
+      console.log(e, id, options)
+    }
+  }
+
+  const joinCommunity = async (community: Community, duration: number) => {
+    if (!isAuthenticated) {
+      console.log("[NOT AUTHENTICATED]")
+      return;
+    }
+    try {
+      const person = {
+        userId: user?.id,
+        company_name: user?.company_name,
+        expiration: getFutureDate(duration).toISOString()
+      } as Member
+      const response0 = await updateDoc(doc(db, communityDoc, community.id), {
+        members: arrayUnion(person)
+      });
+      refreshCommunities();
+      const response1 = updateDoc(doc(db, communityDoc, community.id), {
+        past_members: arrayRemove({ userId: person.userId, company_name: person.company_name })
+      });
+      return response0;
+    } catch (e) {
+      console.log(e, community)
+    }
+  }
+
+  const leaveCommunity = async (community: Community) => {
+    if (!isAuthenticated) {
+      console.log("[NOT AUTHENTICATED]")
+      return;
+    }
+    try {
+      const person = {
+        userId: user?.id,
+        company_name: user?.company_name,
+        expiration: community.members.find(r => r.userId === user?.id)?.expiration
+      } as Member
+      const response0 = await updateDoc(doc(db, communityDoc, community.id), {
+        members: arrayRemove(person)
+      });
+      refreshResidences();
+      const response1 = updateDoc(doc(db, communityDoc, community.id), {
+        past_members: arrayUnion({ userId: person.userId, company_name: person.company_name })
+      });
+      return response0;
+    } catch (e) {
+      console.log(e, community)
+    }
   }
 
   const joinResidence = async (residence: Residence, duration: number) => {
@@ -270,14 +390,20 @@ const DatabaseProvider = (props: any) => {
         residences,
         communities,
         meetups,
+
         refreshResidences,
-        refreshMeetups,
         addResidence,
         updateResidence,
         deleteResidence,
-
         joinResidence,
         leaveResidence,
+
+        refreshMeetups,
+        addCommunity,
+        updateCommunity,
+        deleteCommunity,
+        joinCommunity,
+        leaveCommunity,
 
         addGroupChat,
         deleteGroupChat

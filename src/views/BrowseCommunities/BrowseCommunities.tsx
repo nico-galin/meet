@@ -88,11 +88,11 @@ const BrowseCommunities = ({ }: Props) => {
     const sQuery = query.get("search")?.toLowerCase();
     if (!!sQuery) {
       selected = selected.filter(r => {
-        return JSON.stringify([r.name, r.emoji, r.region, r.companies]).toLowerCase().includes(sQuery);
+        return JSON.stringify([r.name, r.emoji, r.region]).toLowerCase().includes(sQuery);
       })
     }
     selected =  selected.sort((a, b) => a.name.localeCompare(b.name)) as Community[];
-    const comp_coms = selected.filter(c => !!user?.company_name && c.companies.includes(user.company_name))
+    const comp_coms = selected.filter(c => !!user?.company_name && c.group_chats.map(gc => gc.company).includes(user.company_name))
     return {
       company: comp_coms,
       all: selected

@@ -9,15 +9,16 @@ import { Controller, useForm } from 'react-hook-form';
 import { Steps } from '../../CommunityStepper';
 import { formatName } from 'hooks/utils';
 import useDatabase from 'contexts/database/useDatabase';
+import ModalHeader from 'components/ModalHeader';
 
 interface Props {
   useStepper: (...args: any) => any
 }
 
-const ConfirmDeleteResidence = ({ useStepper }: Props) => {
-  const { data, onExit } = useStepper();
-  const residence = data.residence;
-  const { deleteResidence } = useDatabase();
+const ConfirmDeleteCommunity = ({ useStepper }: Props) => {
+  const { data, onExit, setStep } = useStepper();
+  const community = data.community;
+  const { deleteCommunity } = useDatabase();
   const formMethods = useForm();
   const {
     handleSubmit,
@@ -28,24 +29,21 @@ const ConfirmDeleteResidence = ({ useStepper }: Props) => {
   const onSubmitForm = async (e: any) => {
     e.preventDefault();
     handleSubmit((data) => {
-      deleteResidence(residence)
+      deleteCommunity(community)
       onExit();
     })(e).catch((error) => {
       console.log(error)
     })
   }
 
-  const validateName = (input: string) => input === residence.name;
+  const validateName = (input: string) => input === community.name;
 
   return (
     <form onSubmit={onSubmitForm}>
       <Stack spacing="30px" width="100%" textAlign="center" alignItems="start">
-        <Box>
-          <Text textAlign="left" fontWeight="semibold" fontSize="2xl">Are you sure?</Text>
-          <Text textAlign="left" fontSize="sm" color="brand.secondary">(This action is irreversible)</Text>
-        </Box>
+        <ModalHeader title="Are you sure?" subtitle="(This action is irreversible)" onExit={onExit} />
         <Box width="100%" justifyContent="center">
-          <Stack maxWidth={["100%", "50%"]} margin="auto">
+          <Stack maxWidth="100%" margin="auto">
             <Controller 
               render={({
                 field,
@@ -53,8 +51,8 @@ const ConfirmDeleteResidence = ({ useStepper }: Props) => {
                 formState,
               }) => 
                 <FormControl isInvalid={errors.name}>
-                  <FormLabel fontWeight="bold">{residence.name}</FormLabel>
-                  <FormLabel>Enter the residence's entire name to confirm</FormLabel>
+                  <FormLabel fontWeight="bold">{community.name}</FormLabel>
+                  <FormLabel>Enter the community's entire name to confirm</FormLabel>
                   <Input {...field} placeholder="Enter name..." type="text" borderWidth="1px" borderColor="brand.tertiaryStroke" bg="brand.tertiaryBG"/>
                 </FormControl>
               }
@@ -64,10 +62,13 @@ const ConfirmDeleteResidence = ({ useStepper }: Props) => {
             />
           </Stack>
         </Box>
-        <Button type="submit" width="100%" backgroundColor="brand.red" _hover={{ backgroundColor: "brand.redLight"}}>Delete Residence</Button>
+        <HStack width="100%">
+          <Button onClick={() => setStep(Steps.COMMUNITY_PROFILE)}>Cancel</Button>
+          <Button type="submit" width="100%" backgroundColor="brand.red" _hover={{ backgroundColor: "brand.redLight"}}>Delete Community</Button>
+        </HStack>
       </Stack>
     </form>
   )
 }
 
-export default ConfirmDeleteResidence;
+export default ConfirmDeleteCommunity;

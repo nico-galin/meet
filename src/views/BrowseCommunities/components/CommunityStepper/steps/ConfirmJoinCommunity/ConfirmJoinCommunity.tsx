@@ -2,15 +2,16 @@ import { Box, Button, FormControl, FormLabel, HStack, Input, Stack, Text } from 
 import { Controller, useForm } from 'react-hook-form';
 import useDatabase from 'contexts/database/useDatabase';
 import { Steps } from '../../CommunityStepper';
+import ModalHeader from 'components/ModalHeader';
 
 interface Props {
   useStepper: (...args: any) => any
 }
 
-const ConfirmJoinResidence = ({ useStepper }: Props) => {
+const ConfirmJoinCommunity = ({ useStepper }: Props) => {
   const { data, setStep, onExit } = useStepper();
-  const residence = data.residence;
-  const { joinResidence } = useDatabase();
+  const community = data.community;
+  const { joinCommunity } = useDatabase();
   const formMethods = useForm();
   const {
     handleSubmit,
@@ -21,21 +22,17 @@ const ConfirmJoinResidence = ({ useStepper }: Props) => {
   const onSubmitForm = async (e: any) => {
     e.preventDefault();
     handleSubmit((data) => {
-      joinResidence(residence, data.duration)
+      joinCommunity(community, data.duration)
       setStep(Steps.COMMUNITY_PROFILE);
     })(e).catch((error) => {
       console.log(error)
     })
   }
 
-
   return (
     <form onSubmit={onSubmitForm}>
       <Stack spacing="30px" width="100%" textAlign="center" alignItems="start">
-        <Box>
-          <Text textAlign="left" fontWeight="semibold" fontSize="2xl">Are you sure?</Text>
-          <Text textAlign="left" fontSize="sm" color="brand.secondary">(These changes will be reflected across the app)</Text>
-        </Box>
+        <ModalHeader title="Are you sure?" subtitle="(These changes will be reflected across the app)" onExit={onExit} />
         <Box width="100%" justifyContent="center">
           <Stack margin="auto">
             <Controller 
@@ -45,9 +42,9 @@ const ConfirmJoinResidence = ({ useStepper }: Props) => {
                 formState,
               }) => 
                 <FormControl isInvalid={errors.name}>
-                  <FormLabel fontWeight="bold">{residence.name}</FormLabel>
-                  <FormLabel>How many months will you be staying here?</FormLabel>
-                  <Input {...field} placeholder="Enter months..." type="number" borderWidth="1px" borderColor="brand.tertiaryStroke" bg="brand.tertiaryBG"/>
+                  <FormLabel fontWeight="bold">{community.name}</FormLabel>
+                  <FormLabel>How many months would you like to remain a member?</FormLabel>
+                  <Input {...field} placeholder="Enter number..." type="number" borderWidth="1px" borderColor="brand.tertiaryStroke" bg="brand.tertiaryBG"/>
                 </FormControl>
               }
               name={'duration'}
@@ -57,12 +54,12 @@ const ConfirmJoinResidence = ({ useStepper }: Props) => {
           </Stack>
         </Box>
         <HStack width="100%">
-          <Button onClick={onExit}>Cancel</Button>
-        <Button type="submit" flex="1" backgroundColor="brand.primary" _hover={{ backgroundColor: "brand.primaryLight"}}>Join Residence</Button>
+          <Button onClick={() => setStep(Steps.COMMUNITY_PROFILE)}>Cancel</Button>
+          <Button type="submit" flex="1" backgroundColor="brand.primary" _hover={{ backgroundColor: "brand.primaryLight"}}>Join Community</Button>
         </HStack>
       </Stack>
     </form>
   )
 }
 
-export default ConfirmJoinResidence;
+export default ConfirmJoinCommunity;

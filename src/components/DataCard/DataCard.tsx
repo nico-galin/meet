@@ -1,4 +1,4 @@
-import { Box, StackDivider, Text } from "@chakra-ui/react";
+import { Box, Stack, StackDivider, Text } from "@chakra-ui/react";
 
 
 interface Props {
@@ -8,11 +8,10 @@ interface Props {
 }
 
 const DataCard = ({ label, data, size }: Props) => (
-  <Box bgColor="brand.secondaryBG" padding={size === "sm" ? "6px" : "8px"} flex="1" minW="120px" alignItems="start" borderRadius="10px" border="0.5px solid" borderColor="brand.tertiaryStroke">
+  <Stack spacing={size === "sm" ? "-0.5" : "3px"} bgColor="brand.tertiaryBG" padding={size === "sm" ? "6px" : "8px"} flex="1" minW="120px" alignItems="start" borderRadius="10px" border="0.5px solid" borderColor="brand.tertiaryStroke">
     <Text fontSize="xs" fontWeight="semibold" textAlign="start" color="brand.secondary">{label}</Text>
-    {size!== "sm" && <StackDivider height="3px" />}
-    <Text textAlign="start" fontSize="s">{data}</Text>
-  </Box>
+    <Text textAlign="start" fontSize="s" fontWeight="bold">{data}</Text>
+  </Stack>
 )
 
 export default DataCard;

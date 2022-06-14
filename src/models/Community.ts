@@ -4,9 +4,9 @@ import { Member } from "./Residence"
 export interface Community {
   id: string
   name: string
+  description: string
   emoji: string
   region: string
-  companies: string[]
   members: Member[]
   past_members: Member[]
   group_chats: GroupChat[]

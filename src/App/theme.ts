@@ -12,7 +12,7 @@ const colors = {
     secondaryStroke: "#494949",
 
     tertiaryBG: '#48484A',
-    tertiaryStroke: '#6A6A6A',
+    tertiaryStroke: '#6F6F6F',
 
     primary: '#0A84FF',
     primaryLight: '#49A4FF',

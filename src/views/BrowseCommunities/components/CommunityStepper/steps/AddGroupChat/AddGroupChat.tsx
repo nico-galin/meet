@@ -9,6 +9,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { Steps } from '../../CommunityStepper';
 import { formatName, hashGroupChat } from 'hooks/utils';
 import useDatabase from 'contexts/database/useDatabase';
+import ModalHeader from 'components/ModalHeader';
 
 interface Props {
   useStepper: (...args: any) => any
@@ -16,9 +17,9 @@ interface Props {
 
 const AddGroupChat = ({ useStepper }: Props) => {
   const { user } = useAuth();
-  const { setData, data, setStep } = useStepper();
+  const { setData, data, setStep, onExit } = useStepper();
   const { addGroupChat } = useDatabase();
-  const residence = data.residence;
+  const community = data.community;
   const formMethods = useForm();
   const {
     register,
@@ -47,14 +48,14 @@ const AddGroupChat = ({ useStepper }: Props) => {
         // This link is being added before the housing obj exists
         setData((prev: any) => ({
           ...prev,
-          addResidence: {
-            ...prev.addResidence,
-            group_chats: !!prev?.addResidence?.group_chats ? [...prev.addResidence.group_chats, gc] : [gc]
+          addCommunity: {
+            ...prev.addCommunity,
+            group_chats: !!prev?.addCommunity?.group_chats ? [...prev.addCommunity.group_chats, gc] : [gc]
           }
         }))
-        setStep(Steps.VIEW_GROUP_CHATS)
+        //setStep(Steps.VIEW_GROUP_CHATS)
       } else {
-        gc.residenceId = residence.id
+        gc.communityId = community.id
         addGroupChat(gc);
         setStep(Steps.COMMUNITY_PROFILE);
       }
@@ -68,10 +69,7 @@ const AddGroupChat = ({ useStepper }: Props) => {
   return (
     <form onSubmit={onSubmitForm}>
       <Stack spacing="30px" width="100%" textAlign="center" alignItems="start">
-        <Box>
-          <Text textAlign="left" fontWeight="semibold" fontSize="2xl">Add a group chat for {flushedData ? data.residence.name : data.addResidence.name}</Text>
-          <Text textAlign="left" fontSize="sm" color="brand.secondary">(These will expire in 6 months)</Text>
-        </Box>
+        <ModalHeader title={`Add a group chat for ${flushedData ? data.community.name : data.addCommunity.name}`} subtitle="(These will expire in 6 months)" onExit={onExit} />
         <Box width="100%" justifyContent="center">
           <Stack margin="auto" spacing="20px">
             <HStack alignItems="end">
@@ -135,7 +133,6 @@ const AddGroupChat = ({ useStepper }: Props) => {
                 rules={{ required: true }}
               />
             </HStack>
-
             {platform === "imessage" ?   
               <Controller 
                 render={({

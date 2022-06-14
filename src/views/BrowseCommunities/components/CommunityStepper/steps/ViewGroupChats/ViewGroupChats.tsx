@@ -37,13 +37,13 @@ const ViewGroupChats = ({ useStepper }: Props) => {
             <GroupChatCard key={ind} groupChat={gc} onDelete={() => handleDelete(ind)}/>
           ))}
           {!(data?.addResidence?.group_chats?.length > 0) && <Button disabled>No group chats yet</Button>}
-          <Button variant="link" width="min-content" justifyContent="start" padding="0" color="brand.secondary" fontWeight="sm" fontSize="xs" onClick={() => setStep(Steps.ADD_GROUP_CHAT)}>Add group chat</Button>
+          {/*<Button variant="link" width="min-content" justifyContent="start" padding="0" color="brand.secondary" fontWeight="sm" fontSize="xs" onClick={() => setStep(Steps.ADD_GROUP_CHAT)}>Add group chat</Button>*/}
         </Stack>
       </Box>
       <HStack width="100%">
-        <Button onClick={() => !!data.addResidence ? setStep(Steps.ADD_RESIDENCE_PHOTO) : setStep(Steps.COMMUNITY_PROFILE)}>Back</Button>
+        {/*<Button onClick={() => !!data.addResidence ? setStep(Steps.ADD_RESIDENCE_PHOTO) : setStep(Steps.COMMUNITY_PROFILE)}>Back</Button>
         <Button onClick={() => setStep(Steps.CONFIRM_ADD_HOUSING)} flex="1" width="100%" backgroundColor="brand.primary" _hover={{ backgroundColor: "brand.primaryLight"}}>Continue</Button>
-      </HStack>
+          */}</HStack>
     </Stack>
   )
 }

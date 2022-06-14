@@ -1,4 +1,5 @@
 import { supported_companies } from "constants/supported_companies";
+import Community from "models/Community";
 import GroupChat from "models/GroupChat";
 import Residence from "models/Residence";
 
@@ -33,6 +34,11 @@ const hashResidence = async (res: Residence) => {
   return sha256(str);
 }
 
+const hashCommunity = async (com: Community) => {
+  const str = com.name + com.region + com.emoji;
+  return sha256(str);
+}
+
 const hashGroupChat = async (gc: GroupChat) => {
   const str = gc.residenceId + gc.platform + gc.uri
   return sha256(str);
@@ -58,4 +64,15 @@ const getCompanyFromEmail = (email: string) => {
   }
 }
 
-export { formatName, formatAddress, hashResidence, hashGroupChat, getFutureDate, emailSupported, getCompanyFromEmail }
+export {
+  formatName,
+  formatAddress,
+  
+  hashResidence,
+  hashCommunity,
+  hashGroupChat,
+  
+  getFutureDate,
+  
+  emailSupported,
+  getCompanyFromEmail }
