@@ -135,7 +135,7 @@ const BrowseCommunities = ({ }: Props) => {
         width="min-content" minW="250px" height="100%"
         borderRight="1px solid" borderColor="brand.secondaryStroke"
       >
-        <ProductHeader company={user?.company_name} product='Housing' size='sm'/>
+        <ProductHeader company={user?.company_name} product='Communities' size='sm'/>
         { searchBar }
       </VStack>
       <Wrap padding="25px 15px" paddingBottom="300px" flex="1" spacing="15px" height="100%" overflowY="scroll" sx={{

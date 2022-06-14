@@ -16,21 +16,21 @@ export interface DatabaseContextValues {
   loading: boolean
 
   refreshResidences: () => void
-  addResidence: (res: Residence) => Promise<void>
-  updateResidence: (res: UpdateProps) => Promise<void>
-  deleteResidence: (res: Residence) => Promise<void>
-  joinResidence: (res: Residence, duration: number) => Promise<void>
-  leaveResidence: (res: Residence) => Promise<void>
+  addResidence: (res: Residence) => Promise<number>
+  updateResidence: (res: UpdateProps) => Promise<number>
+  deleteResidence: (res: Residence) => Promise<number>
+  joinResidence: (res: Residence, duration: number) => Promise<number>
+  leaveResidence: (res: Residence) => Promise<number>
 
   refreshMeetups: () => void
-  addCommunity: (com: Community) => Promise<void>
-  updateCommunity: (com: UpdateProps) => Promise<void>
-  deleteCommunity: (com: Community) => Promise<void>
-  joinCommunity: (com: Community, duration: number) => Promise<void>
-  leaveCommunity: (com: Community) => Promise<void>
+  addCommunity: (com: Community) => Promise<number>
+  updateCommunity: (com: UpdateProps) => Promise<number>
+  deleteCommunity: (com: Community) => Promise<number>
+  joinCommunity: (com: Community, duration: number) => Promise<number>
+  leaveCommunity: (com: Community) => Promise<number>
 
-  addGroupChat: (gc: GroupChat) => Promise<void>
-  deleteGroupChat: (gc: GroupChat) => Promise<void>
+  addGroupChat: (gc: GroupChat) => Promise<number>
+  deleteGroupChat: (gc: GroupChat) => Promise<number>
 }
 
 const DatabaseContext = createContext<DatabaseContextValues>({

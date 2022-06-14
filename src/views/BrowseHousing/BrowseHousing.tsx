@@ -27,6 +27,7 @@ const BrowseHousing = ({ }: Props) => {
   const [selResidence, setSelResidence] = useState("")
   const [addingResidence, setAddingResidence] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState<selectedFilter[]>([]);
+  const [filteredResidences, setFilteredResidences] = useState<Residence[]>([]);
   const ref = useRef() as React.MutableRefObject<HTMLInputElement>;
   const query = new URLSearchParams(search);
 
@@ -49,6 +50,18 @@ const BrowseHousing = ({ }: Props) => {
       setSelResidence("")
     }
   }, [search])
+
+  useEffect(() => {
+    const query = new URLSearchParams(search);
+    let selected = Object.values(residences);
+    const sQuery = query.get("search")?.toLowerCase();
+    if (!!sQuery) {
+      selected = selected.filter(r => {
+        return JSON.stringify([r.name, r.address]).toLowerCase().includes(sQuery);
+      })
+    }
+    setFilteredResidences(selected);
+  }, [search, residences])
 
   const handleSubmit = () => {
     executeSearch({ navigate, options: { searchText, filters: selectedFilters }});
@@ -78,18 +91,6 @@ const BrowseHousing = ({ }: Props) => {
       navigate("/login")
     }
   }
-
-  const res = useMemo(() => {
-    const query = new URLSearchParams(search);
-    let selected = Object.values(residences);
-    const sQuery = query.get("search")?.toLowerCase();
-    if (!!sQuery) {
-      selected = selected.filter(r => {
-        return JSON.stringify([r.name, r.address]).toLowerCase().includes(sQuery);
-      })
-    }
-    return selected as Residence[];
-  }, [search, residences])
 
   const searchBar = (
     <HStack marginTop="5px" width="100%">
@@ -144,7 +145,7 @@ const BrowseHousing = ({ }: Props) => {
           { searchBar }
           <StackDivider height="20px" />
         </Box>
-        {res.sort((a, b) => a.name.localeCompare(b.name)).map((r, ind) => (
+        {filteredResidences.sort((a, b) => a.name.localeCompare(b.name)).map((r, ind) => (
           <Box key={ind}>
             <ResidenceCard residence={r} onClick={() => onClick(r.id)} />
           </Box>

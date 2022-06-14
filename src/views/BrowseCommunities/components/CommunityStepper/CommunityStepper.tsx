@@ -6,15 +6,16 @@ import AddGroupChat from './steps/AddGroupChat'
 import ConfirmCommunityDetails from './steps/ConfirmCommunityDetails'
 import ConfirmDeleteCommunity from './steps/ConfirmDeleteCommunity'
 import ConfirmJoinCommunity from './steps/ConfirmJoinCommunity'
+import CommunityExists from './steps/CommunityExists'
 
 export enum Steps {
   COMMUNITY_PROFILE,
   ADD_COMMUNITY,
   ADD_GROUP_CHAT,
-  //CONFIRM_ADD_HOUSING,
   CONFIRM_DELETE_COMMUNITY,
   CONFIRM_JOIN_COMMUNITY,
   CONFIRM_COMMUNITY_DETAILS,
+  COMMUNITY_EXISTS,
 }
 
 export interface Props {
@@ -41,6 +42,7 @@ const CommunityStepper = ({ isOpen, startPage, onExit, data}: Props) => {
         CONFIRM_DELETE_COMMUNITY: <ConfirmDeleteCommunity useStepper={useStepper} />,
         CONFIRM_JOIN_COMMUNITY: <ConfirmJoinCommunity useStepper={useStepper} />,
         CONFIRM_COMMUNITY_DETAILS: <ConfirmCommunityDetails useStepper={useStepper} />,
+        COMMUNITY_EXISTS: <CommunityExists useStepper={useStepper} />,
       }}
     />
   )

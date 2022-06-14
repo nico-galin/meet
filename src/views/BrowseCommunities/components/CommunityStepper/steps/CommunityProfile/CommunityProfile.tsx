@@ -66,9 +66,6 @@ const CommunityProfile = ({ useStepper }: Props) => {
         <Box textAlign="left">
           <Text fontSize="xl" fontWeight="semibold">Events</Text>
           <Stack>
-            {companyGCs.map((gc: GroupChat, ind: number) => (
-              <GroupChatCard key={`co${ind}`} groupChat={gc} onDelete={gc.creatorId === user?.id ? () => deleteGroupChat(gc) : undefined}/>
-            ))}
             <Button variant="link" textDecor="underline" width="min-content" justifyContent="start" padding="0" color="brand.secondary" fontWeight="sm" fontSize="xs" onClick={handleAddEvent}>Add an event</Button>
           </Stack>
         </Box>

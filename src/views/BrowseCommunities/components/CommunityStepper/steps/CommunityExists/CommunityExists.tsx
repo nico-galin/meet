@@ -20,9 +20,9 @@ const ConfirmCommunityDetails = ({ useStepper }: Props) => {
   const { addCommunity } = useDatabase();
   const community = data.addCommunity;
   const handleSubmit = async () => {
-    const res = await addCommunity(data.addCommunity);
-    if (res === 337) {
-      setStep(Steps.COMMUNITY_EXISTS)
+    const resp = await addCommunity(data.addCommunity);
+    if (resp === 337) {
+
     } else {
       onExit();
     }
@@ -30,7 +30,7 @@ const ConfirmCommunityDetails = ({ useStepper }: Props) => {
 
   return (
     <Stack spacing="20px" width="100%" textAlign="center" alignItems="start">
-      <ModalHeader title="Confirm Details" subtitle="(Make sure this is all correct)" onExit={onExit} />
+      <ModalHeader title="Duplicate" subtitle="This Community Already Exists" onExit={onExit} />
       <HStack>
         <Text fontSize="4xl">{community.emoji}</Text>
         <StackDivider width="3px" />
@@ -40,8 +40,7 @@ const ConfirmCommunityDetails = ({ useStepper }: Props) => {
         </Box>
       </HStack>
       <HStack width="100%">
-        <Button onClick={() => setStep(Steps.ADD_COMMUNITY)}>Back</Button>
-        <Button onClick={handleSubmit} flex="1" width="100%" backgroundColor="brand.primary" _hover={{ backgroundColor: "brand.primaryLight"}}>Continue</Button>
+        <Button width="100%" onClick={() => setStep(Steps.ADD_COMMUNITY)}>Back</Button>
       </HStack>
     </Stack>
   )

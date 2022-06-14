@@ -25,7 +25,7 @@ const DatabaseProvider = (props: any) => {
   const addResidence = async (residence: Residence) => {
     if (!isAuthenticated || !user) {
       console.log("[NOT AUTHENTICATED]")
-      return;
+      return 403;
     }
     try {
       const id: string = await hashResidence(residence);
@@ -42,16 +42,17 @@ const DatabaseProvider = (props: any) => {
         creatorId: user?.id,
       });
       refreshResidences();
-      return resp;
+      return 200;
     } catch (e) {
       console.log(e, residence);
+      return 500;
     }
   }
 
   const addGroupChat = async (gc: GroupChat) => {
     if (!isAuthenticated || !user) {
       console.log("[NOT AUTHENTICATED]")
-      return;
+      return 403;
     }
     try {
       console.log(gc)
@@ -65,22 +66,27 @@ const DatabaseProvider = (props: any) => {
       }
       if (!curDoc) {
         console.error("Invalid groupchat object");
-        return;
+        return 500;
       }
       const res = await updateDoc(curDoc, {
         group_chats: arrayUnion(gc)
       });
-      refreshResidences();
-      return res;
+      if (!!gc.residenceId) {
+        refreshResidences();
+      } else if(!!gc.communityId) {
+        refreshCommunities();
+      }
+      return 200;
     } catch (e) {
       console.log(e, gc)
+      return 500;
     }
   }
 
   const deleteGroupChat = async (gc: GroupChat) => {
     if (!isAuthenticated || !user) {
       console.log("[NOT AUTHENTICATED]")
-      return;
+      return 403;
     }
     try {
       let curDoc;
@@ -91,41 +97,44 @@ const DatabaseProvider = (props: any) => {
       }
       if (!curDoc) {
         console.error("Invalid groupchat object");
-        return;
+        return 500;
       }
       const res = await updateDoc(curDoc, {
         regions: arrayRemove(gc)
       });
       refreshResidences();
-      return res;
+      return 200;
     } catch (e) {
       console.log(e, gc)
+      return 500;
     }
   }
 
   const deleteResidence = async (residence: Residence) => {
     if (!isAuthenticated) {
       console.log("[NOT AUTHENTICATED]")
-      return;
+      return 403;
     }
     try {
       const res = await deleteDoc(doc(db, residenceDoc, residence.id));
       refreshResidences();
-      return res;
+      return 200;
     } catch (e) {
       console.log(e, residence);
+      return 500;
     }
   }
 
   const updateResidence = async ({ id, options }: UpdateProps) => {
     if (!isAuthenticated) {
       console.log("[NOT AUTHENTICATED]")
-      return;
+      return 403;
     }
     try {
-
+      return 200;
     } catch (e) {
       console.log(e, id, options)
+      return 500;
     }
   }
 
@@ -146,10 +155,11 @@ const DatabaseProvider = (props: any) => {
   const addCommunity = async (community: Community) => {
     if (!isAuthenticated || !user) {
       console.log("[NOT AUTHENTICATED]")
-      return;
+      return 403;
     }
     try {
       const id: string = await hashCommunity(community);
+      if (!!communities[id] || Object.values(communities).filter(c => c.name == community.name && c.region === community.region).length > 0) return 337;
       community.group_chats = !!community.group_chats ? community.group_chats.map(gc => ({ ...gc, residenceId: id})) : [];
       const uploadGCIDs = await Promise.all(community.group_chats.map(gc => hashGroupChat(gc)))
       community.group_chats = community.group_chats.map((gc, ind) => ({ ...gc, id: uploadGCIDs[ind], expiration: getFutureDate(6).toISOString()}))
@@ -164,9 +174,10 @@ const DatabaseProvider = (props: any) => {
         creation_timestamp: new Date().toISOString()
       });
       refreshCommunities();
-      return resp;
+      return 200;
     } catch (e) {
       console.log(e, community);
+      return 500;
     }
   }
 
@@ -183,33 +194,35 @@ const DatabaseProvider = (props: any) => {
   const deleteCommunity = async (community: Community) => {
     if (!isAuthenticated) {
       console.log("[NOT AUTHENTICATED]")
-      return;
+      return 403;
     }
     try {
       const res = await deleteDoc(doc(db, communityDoc, community.id));
       refreshCommunities();
-      return res;
+      return 200;
     } catch (e) {
       console.log(e, community);
+      return 500;
     }
   }
 
   const updateCommunity = async ({ id, options }: UpdateProps) => {
     if (!isAuthenticated) {
       console.log("[NOT AUTHENTICATED]")
-      return;
+      return 403;
     }
     try {
-
+      return 200;
     } catch (e) {
       console.log(e, id, options)
+      return 500;
     }
   }
 
   const joinCommunity = async (community: Community, duration: number) => {
     if (!isAuthenticated) {
       console.log("[NOT AUTHENTICATED]")
-      return;
+      return 403;
     }
     try {
       const person = {
@@ -224,16 +237,17 @@ const DatabaseProvider = (props: any) => {
       const response1 = updateDoc(doc(db, communityDoc, community.id), {
         past_members: arrayRemove({ userId: person.userId, company_name: person.company_name })
       });
-      return response0;
+      return 200;
     } catch (e) {
       console.log(e, community)
+      return 500;
     }
   }
 
   const leaveCommunity = async (community: Community) => {
     if (!isAuthenticated) {
       console.log("[NOT AUTHENTICATED]")
-      return;
+      return 403;
     }
     try {
       const person = {
@@ -248,16 +262,17 @@ const DatabaseProvider = (props: any) => {
       const response1 = updateDoc(doc(db, communityDoc, community.id), {
         past_members: arrayUnion({ userId: person.userId, company_name: person.company_name })
       });
-      return response0;
+      return 200;
     } catch (e) {
       console.log(e, community)
+      return 500;
     }
   }
 
   const joinResidence = async (residence: Residence, duration: number) => {
     if (!isAuthenticated) {
       console.log("[NOT AUTHENTICATED]")
-      return;
+      return 403;
     }
     try {
       const person = {
@@ -272,16 +287,17 @@ const DatabaseProvider = (props: any) => {
       const response1 = updateDoc(doc(db, residenceDoc, residence.id), {
         past_residents: arrayRemove({ userId: person.userId, company_name: person.company_name })
       });
-      return response0;
+      return 200;
     } catch (e) {
       console.log(e, residence)
+      return 500;
     }
   }
 
   const leaveResidence = async (residence: Residence) => {
     if (!isAuthenticated) {
       console.log("[NOT AUTHENTICATED]")
-      return;
+      return 403;
     }
     try {
       const person = {
@@ -296,9 +312,10 @@ const DatabaseProvider = (props: any) => {
       const response1 = updateDoc(doc(db, residenceDoc, residence.id), {
         past_residents: arrayUnion({ userId: person.userId, company_name: person.company_name })
       });
-      return response0;
+      return 200;
     } catch (e) {
       console.log(e, residence)
+      return 500;
     }
   }
 

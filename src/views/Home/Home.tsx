@@ -14,10 +14,10 @@ const Home = ({ }: Props) => {
       <Stack spacing="40px">
         <Box>
           <Text fontWeight="bold" fontSize="3xl" textAlign="center">Welcome to Meet</Text>
-          <Text color="brand.secondary" textAlign="center">Find your people</Text>
+          <Text color="brand.secondary" textAlign="center">Interns, find your people</Text>
         </Box>
         <HStack>
-          <Button onClick={() => navigate("/meetups")}>Find Meetups</Button>
+          <Button onClick={() => navigate("/communities")}>Find Communities</Button>
           <Button onClick={() => navigate("/housing")} flex="1" bgColor="brand.primary" _hover={{bgColor: "brand.primaryLight"}}>Find Housing Groups</Button>
         </HStack>
       </Stack>
