@@ -134,7 +134,7 @@ const DatabaseProvider = (props: any) => {
     const newRes: {[key: string]: any} = {};
     querySnapshot.forEach(doc => {
       const r = doc.data();
-      newRes[r.id] = r;
+      newRes[r.id] = r as Residence;
     })
     setResidences(newRes);
   }
@@ -150,19 +150,20 @@ const DatabaseProvider = (props: any) => {
     }
     try {
       const id: string = await hashCommunity(community);
-      community.group_chats = community.group_chats.map(gc => ({ ...gc, residenceId: id}))
+      community.group_chats = !!community.group_chats ? community.group_chats.map(gc => ({ ...gc, residenceId: id})) : [];
       const uploadGCIDs = await Promise.all(community.group_chats.map(gc => hashGroupChat(gc)))
       community.group_chats = community.group_chats.map((gc, ind) => ({ ...gc, id: uploadGCIDs[ind], expiration: getFutureDate(6).toISOString()}))
 
       const resp = await setDoc(doc(db, communityDoc, id), {
         ...community,
         id,
-        current_residents: [],
-        past_residents: [],
+        members: [],
+        past_members: [],
         pending_review: true,
         creatorId: user?.id,
+        creation_timestamp: new Date().toISOString()
       });
-      refreshResidences();
+      refreshCommunities();
       return resp;
     } catch (e) {
       console.log(e, community);
@@ -170,86 +171,13 @@ const DatabaseProvider = (props: any) => {
   }
 
   const refreshCommunities = async () => {
-    setCommunities({
-      "2121e21": {
-        id: "2121e21",
-        name: "Tennis",
-        description: "Tennis squad",
-        emoji: "🎾",
-        region: "Santa Clara Valley",
-        members: [],
-        past_members: [],
-        group_chats: [],
-        pending_review: false,
-        creatorId: "8fialn3nhKOeBO8OjYxgHXOixPi1",
-        creation_timestamp: "0"
-      },
-      "2121asdas": {
-        id: "2121asdas",
-        name: "Tennis",
-        description: "Tennis squad",
-        emoji: "🎾",
-        region: "Santa Clara Valley",
-        members: [],
-        past_members: [],
-        group_chats: [],
-        pending_review: false,
-        creatorId: "8fialn3nhKOeBO8OjYxgHXOixPi1",
-        creation_timestamp: "0"
-      },
-      "asdasd3d2t2asdas": {
-        id: "asdasd3d2t2asdas",
-        name: "Tennis",
-        description: "Tennis squad",
-        emoji: "🎾",
-        region: "Santa Clara Valley",
-        members: [],
-        past_members: [],
-        group_chats: [],
-        pending_review: false,
-        creatorId: "8fialn3nhKOeBO8OjYxgHXOixPi1",
-        creation_timestamp: "0"
-      },
-      "asdasda33ada": {
-        id: "asdasda33ada",
-        name: "Tennis",
-        description: "Tennis squad",
-        emoji: "🎾",
-        region: "Santa Clara Valley",
-        members: [],
-        past_members: [],
-        group_chats: [],
-        pending_review: false,
-        creatorId: "8fialn3nhKOeBO8OjYxgHXOixPi1",
-        creation_timestamp: "0"
-      },
-      "231321aw12dad": {
-        id: "231321aw12dad",
-        name: "Tennis",
-        description: "Tennis squad",
-        emoji: "🎾",
-        region: "Santa Clara Valley",
-        members: [],
-        past_members: [],
-        group_chats: [],
-        pending_review: false,
-        creatorId: "8fialn3nhKOeBO8OjYxgHXOixPi1",
-        creation_timestamp: "0"
-      },
-      "asdasd3d322d3d2": {
-        id: "asdasd3d322d3d2",
-        name: "Tennis",
-        description: "Tennis squad",
-        emoji: "🎾",
-        region: "Santa Clara Valley",
-        members: [],
-        past_members: [],
-        group_chats: [],
-        pending_review: false,
-        creatorId: "8fialn3nhKOeBO8OjYxgHXOixPi1",
-        creation_timestamp: "0"
-      },
-  });
+    const querySnapshot = await getDocs(collection(db, communityDoc));
+    const newCom: {[key: string]: any} = {};
+    querySnapshot.forEach(doc => {
+      const c = doc.data();
+      newCom[c.id] = c as Community;
+    })
+    setCommunities(newCom);
   }
 
   const deleteCommunity = async (community: Community) => {
