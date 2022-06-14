@@ -24,7 +24,7 @@ const SearchMeetups = ({ }: Props) => {
   }
   return (
     <VStack marginTop="30vh"  alignItems="center">
-      <Box minW="400px" padding="40px" width="min-content" height="max-content" bgColor="brand.secondaryBG" borderRadius="8px" borderWidth="1px" borderColor="brand.secondaryStroke">
+      <Box minW="min(400px, 80vw)" padding="40px" width="min-content" height="max-content" bgColor="brand.secondaryBG" borderRadius="8px" borderWidth="1px" borderColor="brand.secondaryStroke">
         <Text fontSize="sm" color="brand.secondary">Welcome to Meet</Text>
         <Text fontSize="2xl" fontWeight="semibold">Find Meetups</Text>
         <StackDivider height="15px" />

@@ -127,7 +127,7 @@ const BrowseCommunities = ({ }: Props) => {
   return (
     <HStack position="relative" height="100%" width="100%" alignItems="start" overflow="hidden">
       <VStack
-        display={["none", "block"]}
+        display={["none", "none", "block"]}
         divider={<StackDivider height="1px" backgroundColor="theme.secondaryStroke" />}
         spacing="10px"
         padding="15px" backgroundColor="brand.secondaryBG"
@@ -149,7 +149,7 @@ const BrowseCommunities = ({ }: Props) => {
           },
         }}
       >
-        <Box width="100%" display={["block", "none"]}>
+        <Box width="100%" display={["block", "block", "none"]}>
           { searchBar }
           <StackDivider height="20px" />
         </Box>

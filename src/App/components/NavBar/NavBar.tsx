@@ -16,10 +16,14 @@ import { useNavigate } from 'react-router-dom'
 import useAuth from 'contexts/auth/useAuth';
 import { ReactComponent as Logo } from "assets/svg/logo.svg"
 import { formatName } from 'hooks/utils';
+import MenuIcon from 'components/MenuIcon';
 
-interface Props {};
+interface Props {
+  fullscreenNavOpen: boolean,
+  toggleFullscreenNav: () => void,
+};
 
-const NavBar = (props: Props) => {
+const NavBar = ({ fullscreenNavOpen, toggleFullscreenNav }: Props) => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const { isAuthenticated, signIn, signOut, user } = useAuth();
@@ -38,7 +42,7 @@ const NavBar = (props: Props) => {
           </Link>
           <Link as={rLink} _hover={{textDecoration: "none"}} to="/home"><Text fontSize="xl">Meet</Text></Link>
         </HStack>
-        <HStack spacing="30px">
+        <HStack spacing="30px" display={["none", "none", "flex"]}>
           <Link as={rLink} _hover={{textDecoration: "none"}} to="/housing"><Text fontSize="sm">Housing</Text></Link>
           <Link as={rLink} _hover={{textDecoration: "none"}} to="/meetups"><Text fontSize="sm">Meetups</Text></Link>
           <Link as={rLink} _hover={{textDecoration: "none"}} to="/communities"><Text fontSize="sm">Communities</Text></Link>
@@ -57,6 +61,9 @@ const NavBar = (props: Props) => {
             }
           </HStack>
         </HStack>
+        <Box display={["block", "block", "none"]}>
+          <MenuIcon onClick={toggleFullscreenNav} checked={fullscreenNavOpen}/>
+        </Box>
       </HStack>
     </Box>
   )

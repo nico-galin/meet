@@ -1,8 +1,8 @@
 import * as React from "react"
 import {
-  Box, Image, Link, useColorMode,
+  Box, Image, Link, Stack, StackDivider, Text, useColorMode,
 } from "@chakra-ui/react"
-import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
+import { Navigate, Route, Routes, useLocation, useNavigate, Link as rLink  } from 'react-router-dom'
 import Providers from "./Providers"
 import NavBar from "./components/NavBar";
 import Home from "../views/Home";
@@ -19,30 +19,45 @@ import useAuth from "contexts/auth/useAuth";
 import Support from "views/Support";
 import BrowseCommunities from "views/BrowseCommunities";
 
-const App = () => (
-  <Providers>
-    <Box position="fixed" width="100%" height="100%" top="0" left="0" overflowY="hidden">
-      <NavBar />
-      <Box overflowY="scroll" height="100%"
-        sx={{
-          '&::-webkit-scrollbar': {
-            width: '16px',
-            borderRadius: '8px',
-            backgroundColor: `rgba(0, 0, 0, 0.05)`,
-          },
-          '&::-webkit-scrollbar-thumb': {
-            backgroundColor: `rgba(0, 0, 0, 0.05)`,
-          },
-        }}
-      >
-        <Navigation />
-        {/*<Link position="absolute" bottom={8} right={8} isExternal href="https://nicogalin.com">
-          <Image src={NicoLogo} width={["100px", "140px"]} />
-        </Link>*/}
+const App = () => {
+  const [fsNavOpen, setFSNavOpen] = React.useState(false);
+  const toggleFullscreenNav = () => setFSNavOpen(v => !v);
+  return (
+    <Providers>
+      <Box position="fixed" width="100%" height="100%" top="0" left="0" overflowY="hidden">
+        <NavBar fullscreenNavOpen={fsNavOpen} toggleFullscreenNav={toggleFullscreenNav}/>
+        <Box overflowY="scroll" height="100%"
+          sx={{
+            '&::-webkit-scrollbar': {
+              width: '16px',
+              borderRadius: '8px',
+              backgroundColor: `rgba(0, 0, 0, 0.05)`,
+            },
+            '&::-webkit-scrollbar-thumb': {
+              backgroundColor: `rgba(0, 0, 0, 0.05)`,
+            },
+          }}
+        >
+          <Stack opacity={fsNavOpen ? 1 : 0} pointerEvents={fsNavOpen ? "all" : "none"} transition="0.2s ease-in" position="absolute" spacing="15px" justifyContent="center" alignItems="center" zIndex={999} bgColor="brand.secondaryBG" fontSize="xl" textTransform="uppercase" width="100%" height="100%" paddingBottom="20vh">
+            <Link onClickCapture={toggleFullscreenNav} as={rLink} _hover={{textDecoration: "none"}} to="/housing"><Text>Housing</Text></Link>
+            <Link onClickCapture={toggleFullscreenNav} as={rLink} _hover={{textDecoration: "none"}} to="/meetups"><Text>Meetups</Text></Link>
+            <Link onClickCapture={toggleFullscreenNav} as={rLink} _hover={{textDecoration: "none"}} to="/communities"><Text>Communities</Text></Link>
+            <Link onClickCapture={toggleFullscreenNav} as={rLink} _hover={{textDecoration: "none"}} to="/settings"><Text>Settings</Text></Link>
+            <Link onClickCapture={toggleFullscreenNav} as={rLink} _hover={{textDecoration: "none"}} to="/support"><Text>Support</Text></Link>
+            <StackDivider height="30px" />
+            <Link onClickCapture={toggleFullscreenNav} isExternal href="https://nicogalin.com">
+              <Image src={NicoLogo} width={["100px", "140px"]} />
+            </Link>
+          </Stack>
+          <Navigation />
+          {/*<Link position="absolute" bottom={8} right={8} isExternal href="https://nicogalin.com">
+            <Image src={NicoLogo} width={["100px", "140px"]} />
+          </Link>*/}
+        </Box>
       </Box>
-    </Box>
-  </Providers>
-)
+    </Providers>
+  )
+}
 
 const Navigation = () => {
   const navigate = useNavigate();

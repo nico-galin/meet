@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import {
-  Box, Button, HStack, Image, Input, StackDivider, Text, VStack,
+  Box, Button, HStack, Image, Input, Stack, StackDivider, Text, VStack,
 } from '@chakra-ui/react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import ProductHeader from 'components/ProductHeader';
@@ -21,12 +21,12 @@ const ResidenceCard = ({ residence, onClick }: Props) => {
   const company_residents = !!residence?.current_residents ? residence.current_residents.filter(r => r.company_name == user?.company_name).length : 0;
   const total_residents = !!residence?.current_residents ? residence.current_residents.length.toString() : 0;
  return (
-    <Button width="100%" onClick={onClick} flexDirection="row" height="min-content" justifyContent="start" bgColor="brand.secondaryBG" border="1px solid" borderColor="brand.secondaryStroke" borderRadius="8px" padding={["8px", "15px"]}>
+    <Button width="100%" onClick={onClick} flexDirection="row" height="min-content" justifyContent="start" bgColor="brand.secondaryBG" border="1px solid" borderColor="brand.secondaryStroke" borderRadius="8px" padding={["8px", "15px"]} overflow="hidden">
       <Image src={residence.photo_uri} fit="cover" minHeight={["50px", "100px"]} width={["50px", "100px"]} borderRadius="8px"/>
       <StackDivider width={["5px", "15px"]} />
-      <VStack alignItems="start" width="min-content">
+      <Stack alignItems="start" width="min-content">
         <Box alignItems="start" justifyContent="start" minW="min-content">
-          <Text fontWeight="semibold" textAlign="left" fontSize={["sm", "md"]}>{residence.name}</Text>
+          <Text fontWeight="semibold" textAlign="left" fontSize={["sm", "md"]} wordBreak="break-all">{residence.name}</Text>
           <Text fontSize={["xx-small", "xs"]} textAlign="start" color="brand.secondary">{residence.address}, {residence.city}, {residence.state} {residence.zip}</Text>
         </Box>
         <HStack spacing="10px" display={["none", "flex"]}>
@@ -34,7 +34,7 @@ const ResidenceCard = ({ residence, onClick }: Props) => {
           {!!user && !!user.company_name && <DataCard label={formatName(user.company_name)} data={company_residents.toString()}/>}
           <DataCard label={`Total Residents`} data={total_residents.toString()}/>
         </HStack>
-      </VStack>
+      </Stack>
     </Button>
  )
 };

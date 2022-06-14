@@ -120,7 +120,7 @@ const BrowseHousing = ({ }: Props) => {
   return (
     <HStack height="100%" alignItems="start">
       <VStack
-        display={["none", "block"]}
+        display={["none", "none", "block"]}
         divider={<StackDivider height="1px" backgroundColor="theme.secondaryStroke" />}
         spacing="10px"
         padding="15px" backgroundColor="brand.secondaryBG"
@@ -141,7 +141,7 @@ const BrowseHousing = ({ }: Props) => {
             backgroundColor: `none`,
           },
         }}>
-        <Box width="100%" display={["block", "none"]}>
+        <Box width="100%" display={["block", "block", "none"]}>
           { searchBar }
           <StackDivider height="20px" />
         </Box>
